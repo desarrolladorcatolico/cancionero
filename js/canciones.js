@@ -100,14 +100,24 @@ viviremos nuestra fe
 con la ayuda del Señor.`},
 
   {id: 8, titulo: 'La Vírgen María nos reune', autor: '', categoria: 'Entrada', letra: `La Virgen María nos reúne
-En Nombre del Señor
-Del Señor Jesús, Dios Nuestro Señor
-Venimos a buscar el Pan de la Palabra
-Palabra del Señor que reconforta el alma.
-Venimos a comer el Pan Sacramentado
-El Cuerpo del Señor Jesús resucitado
-Venimos a llevar el Pan de la Alegría
-Mensaje que nos dio el Hijo de María.`},
+en nombre del Señor,
+del Señor Jesús, 
+Dios nuestro señor.
+
+Venimos a buscar
+el pan de la Palabra,
+Palabra del Señor
+que reconforta el alma.
+
+Venimos a comer
+el pan sacramentado,
+el Cuerpo del Señor
+Jesús resucitado.
+
+Venimos a llevar
+el pan de la alegría
+mensaje que nos dio
+el Hijo de María.`},
 
   {id: 9, titulo: 'Somos un pueblo que camina', autor: '', categoria: 'Entrada', letra: `Somos un pueblo que camina
 Y juntos caminando podremos alcanzar
