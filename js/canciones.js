@@ -232,7 +232,7 @@ Te bendecimos, te adoramos
 Te glorificamos te damos gracias
 Señor Dios Rey celestial, Dios Padre
 Todopoderoso.
-¿
+
 Señor Hijo único, Jesucristo
 Señor Dios, cordero de Dios, Hijo del Padre
 Tú que quitas el pecado del mundo, ten piedad de nosotros
@@ -537,11 +537,35 @@ es escuela santa de contemplación,
 ábrenos hoy ese tesoro 
 que guardas en tu Inmaculado Corazón.`},
 
-  {id: 34, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+  {id: 34, titulo: 'Santo II', autor: 'N-N', categoria: 'Santo', letra: `Santo, santo, santo
+Santo es el señor
+Dios del universo
+Santo es el Señor
 
-  {id: 35, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+Hosanna en el cielo
+hosanna en las alturas
+bendito el que viene
+en nombre del Señor`},
 
-  {id: 36, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+  {id: 35, titulo: 'Santo I', autor: 'N-N', categoria: 'Santo', letra: `Santo Santo Santo es el Señor
+Dios del universo
+llenos están el cielo y la tierra
+de tu gloria.
+
+Hosanna en el cielo
+hosanna en las alturas
+bendito el que viene
+en nombre del Señor.
+
+Hosanna en el cielo
+hosanna en las alturas
+bendito el que viene
+en nombre del Señor.`},
+
+  {id: 36, titulo: 'Santo IV', autor: 'N-N', categoria: 'Santo', letra: `Santo, Santo, Santo, Dios y Señor Nuestro,
+canta tu grandeza la hermosa creación; 
+junto con sus voces, suba nuestro canto:
+Hosanna, hosanna, hosanna a nuestro Dios. `},
 
   {id: 37, titulo: '', autor: 'N-N', categoria: '', letra: ``},
 
