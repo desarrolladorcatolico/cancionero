@@ -104,15 +104,18 @@ en nombre del Señor,
 del Señor Jesús, 
 Dios nuestro señor.
 
+
 Venimos a buscar
 el pan de la Palabra,
 Palabra del Señor
 que reconforta el alma.
 
+
 Venimos a comer
 el pan sacramentado,
 el Cuerpo del Señor
 Jesús resucitado.
+
 
 Venimos a llevar
 el pan de la alegría
