@@ -441,5 +441,115 @@ y de lo contemplado dar.
 Somos fruto de tu entrega
 tu familia en comunión
 y en el tiempo prolongamos
-la gracia de tu misión.`}
+la gracia de tu misión.`},
+
+  {id: 30, titulo: 'Sobre tu Altar', autor: 'N-N', categoria: 'Ofertorio', letra: `Sobre tu altar lo más preciado Señor
+sobre tu Altar mi pan y vino de amor.
+Sobre tu Altar mi vida entera.
+
+Mi pasado te lo doy
+mi presente contodo mi amor
+mi futuro lo pongo en tusmanos.
+
+Confiaré, no temeré
+Confiare, me entregaré
+Confiaré en Ti Señor
+Consagraré mi corazón a Tu amor
+A Dios mi Rey.
+
+Sobre tu altar te dejo mi corazón
+Sobretu altar te dejo mi voluntad
+sobre tu Altar mi vida entera.`},
+
+  {id: 31, titulo: 'Te ofrecemos, Padre nuestro', autor: 'N-N', categoria: 'Colecta', letra: `Te ofrecemos, Padre nuestro
+con el vino y con el pan
+nuestras penas y alegrías,
+el trabajo y nuestro afán.
+
+Como el trigo de los campos
+bajo el signo de la cruz,
+se transformen nuestras vidas
+en el Cuerpo de Jesús.
+
+A los pobres de la Tierra
+a los que sufriendo están,
+cambia su dolor en vino
+como la uva en lagar.
+
+Estos dones son el signo
+del esfuerzo de unidad,
+que los hombres realizamos
+en el campo y la ciudad.`},
+
+  {id: 32, titulo: 'Vida en Abundancia', autor: 'N-N', categoria: 'Comunion', letra: `Los lirios del campo y las aves del cielo
+No se preocupan porque están en mis manos
+Tené confianza en mí
+Acá estoy junto a vos
+ 
+Amá lo que sos y tus circunstancias
+Estoy con vos, con tu cruz en mi espalda
+Todo terminará bien
+Yo hago nuevas todas las cosas
+
+
+	Yo vengo a traerte vida
+	Vida en abundancia, en abundancia
+	Yo soy el camino, la verdad y la vida
+	Vida en abundancia, en abundancia
+
+
+No hice al hombre para que esté solo
+Caminen juntos como hermanos
+Sopórtense mutuamente
+Ámense unos a otros
+
+La felicidad de la vida eterna
+Empieza conmigo en la tierra
+Sentite vivo
+La fiesta del reino comienza acá
+
+
+Animos tu sueños y tus proyectos,
+todas tus búsquedas y tus anhelos
+Ya oí tu plegaria
+arrojate a la esperanza.
+
+Subí a mi barca, navegá mar adentro,
+en lo profundo está lo verdadero.
+Animate a volar 
+la aventura de confiar.`},
+
+  {id: 33, titulo: 'Señora del Santo Rosario', autor: 'N-N', categoria: 'Himno', letra: `¡Salve, Madre de Dios!
+¡Salve, Reina del Cielo!
+¡Señora del Santo Rosario!
+Hoy tus hijos te aclaman:
+¡Oh, Llena de Gracia,
+ruega por nostros a Dios!
+¡Ruega por nosotros a Dios!
+
+Tú creiste, oh María,
+el anuncio del ángel del Señor
+y por tu fe, Llena de Gracia,
+concebiste en tu seno al Salvador.
+
+Tu rosario, oh María, 
+es escuela santa de contemplación, 
+ábrenos hoy ese tesoro 
+que guardas en tu Inmaculado Corazón.`},
+
+  {id: 34, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+
+  {id: 35, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+
+  {id: 36, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+
+  {id: 37, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+
+  {id: 38, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+
+  {id: 39, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+
+  {id: 40, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+
+  
 ];
