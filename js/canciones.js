@@ -308,11 +308,11 @@ vine a alabar a Dios.`,
     titulo: "Señor ten piedad",
     autor: "N-N",
     categoria: "Perdon",
-    letra: `Señor, Señor, Señor ten piedad.(BIS)
+    letra: ` Señor, Señor, Señor ten piedad.(BIS)
 
-    Cristo, Cristo, Cristo ten piedad. (BIS)
+  Cristo, Cristo, Cristo ten piedad. (BIS)
 
-    Señor, Señor, Señor ten piedad. (BIS)`,
+  Señor, Señor, Señor ten piedad. (BIS)`,
   },
 
   { id: 16, titulo: "Aleluya", autor: "N-N", categoria: "Antifona", letra: `¡Aleluya, Aleluya, Aleluya!
@@ -639,12 +639,12 @@ la gracia de tu misión.`,
     letra: `Sobre tu altar, lo más preciado, Señor
 sobre tu altar mi pan y vino de amor
 sobre tu altar mi vida entera.
-----------------------------------------------------
+--------------------------------------------------
 
 Mi pasado Te lo doy
 mi presente con todo mi amor
 mi futuro lo pongo en tus manos.
----------------------------------------------------
+--------------------------------------------------
 
 Sobre tu altar Te dejo mi corazón
 sobre tu altar Te dejo mi voluntad
@@ -695,7 +695,7 @@ todo terminará bien
 yo hago nuevas todas las cosas.
 
 
-ESTRIBILLO
+(ESTRIBILLO)
 YO VEENGO A TRAERTE VIIDA,
 VIDA EN ABUNDANCIA
 EN ABUNDANCIA.
@@ -716,7 +716,7 @@ empieeza conmigo en la tieerra
 sentiite vivo,
 la fiesta del reino comienza acá.
 
-ESTRIBILLO
+(ESTRIBILLO)
 
 Animo tus sueños y tus proyectos,
 todas tus búsquedas y tus anheelos
@@ -725,11 +725,11 @@ arrojate a la esperaanza.
 
 
 Subí a mi barca, navegá mar adentro,     
-en lo profundo estálo verdadeero.
+en lo profundo está lo verdadeero.
 Animaate a volar,
 la aventura dee confiaar.
 
-ESTRIBILLO.`,
+(ESTRIBILLO)`,
   },
 
   {
@@ -737,7 +737,7 @@ ESTRIBILLO.`,
     titulo: "Señora del Santo Rosario",
     autor: "N-N",
     categoria: "Himno",
-    letra: `(Estribillo) 
+    letra: `(ESTRIBILLO) 
 
 ¡Salve, Madre de Dios! 
 ¡Salve, Reina del Cielo! 
@@ -752,14 +752,14 @@ el anuncio del ángel del Señor
 y por tu fe, Llena de Gracia, 
 concebiste en tu seno al Salvador. 
 
-(Estribillo)
+(ESTRIBILLO)
 
 Tu rosario, oh María, 
 es escuela santa de contemplación, 
 ábrenos hoy ese tesoro 
 que guardas en tu Inmaculado Corazón.
 
-(Estribillo)`,
+(ESTRIBILLO)`,
   },
 
   {
@@ -768,19 +768,19 @@ que guardas en tu Inmaculado Corazón.
     autor: "N-N",
     categoria: "Santo",
     letra: `Santo, Santo, Santo es el Señor
-    Dios del universo.
-    Llenos están el Cielo y 
-    la tierra de tu Gloria, Hosanna!
+  Dios del universo.
+  Llenos están el Cielo y 
+  la tierra de tu Gloria, Hosanna!
 
-    ­Hosanna, Hosanna, Hosana en el Cielo!
-    ­Hosanna, Hosanna, Hosana en el Cielo!
+  ­Hosanna, Hosanna, Hosanna en el Cielo!
+  ­Hosanna, Hosanna, Hosanna en el Cielo!
 
-    Bendito el que viene
-    en nombre del Señor.
-    ­Hosanna en el cielo, Hosanna!
+  Bendito el que viene
+  en nombre del Señor.
+  ­Hosanna en el cielo, Hosanna!
     
-    ­Hosanna, Hosanna, Hosana en el Cielo!
-    ­Hosanna, Hosanna, Hosana en el Cielo!`,
+  ­Hosanna, Hosanna, Hosanna en el Cielo!
+  ­Hosanna, Hosanna, Hosanna en el Cielo!`,
   },
 
   {
@@ -822,7 +822,7 @@ Hosanna, hosanna, hosanna a nuestro Dios. `,
     categoria: "Gloria",
     letra: `Gloria a Dios en el cielo y en la tierra paz					
 
-a todos los hombres que ama el Señor   (BIS)
+a todos los hombres que ama el Señor (BIS)
 
 Por tu inmensa gloria te alabamos,
 
@@ -854,7 +854,7 @@ solo Tú Altísimo Jesucristo
 
 con el Espíritu Santo en la gloria de Dios Padre.  
 
-Amén,  a  a  a   a  mén. `,
+Amén,  a  a  a   a  mén.`,
   },
 
   { id: 38, titulo: "Cordero V", autor: "N-N", categoria: "Cordero", letra: `Cordero de Dios que quitas el pecado del mundo,
