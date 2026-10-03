@@ -1,5 +1,241 @@
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#f5f5f5}body{overflow-x:hidden}header{min-height:58px;background:#1565c0;color:#fff;padding:8px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}header h2{margin:0;flex:1 1 auto;font-size:24px}#estadoNube{white-space:nowrap}button{padding:9px 13px;cursor:pointer;border:0;border-radius:5px}.contenedor{display:grid;grid-template-columns:minmax(180px,22%) minmax(260px,38%) minmax(300px,40%);width:100%;height:calc(100vh - 58px);min-height:520px}.panel{overflow:auto;background:#fff;border-right:1px solid #ddd}.panelMomentos{min-width:0}.tituloMomentos{margin:0;padding:16px 12px;font-size:20px}.scrollMomentos{width:100%}.momento{padding:10px 12px;border-bottom:3px solid #ddd;cursor:pointer}.momento:hover{background:#e3f2fd}.cancion{padding:10px 12px;border-bottom:2px solid #ddd;cursor:pointer}.cancion:hover{background:#f0f0f0}#buscador{width:calc(100% - 20px);margin:10px;padding:9px}#seleccion{padding:12px;overflow:auto;min-width:0;background:#f8f8f8}#seleccion h3{margin-top:4px}.itemSeleccion{padding:12px;margin-bottom:8px;border-left:5px solid #1565c0;overflow-wrap:anywhere}.completo{background:#d4edda}.incompleto{background:#fff3cd}#modoCelebracion{position:fixed;inset:0;width:100%;height:100vh;background:#fff;z-index:999;display:flex;flex-direction:column}#modoCelebracion.oculto,.oculto{display:none}#tituloCelebracion{text-align:center;margin:0;padding:8px 10px;font-size:20px;line-height:1.2;background:#1565c0;color:#fff}#tituloCelebracion small{font-size:13px;font-weight:normal}#letraCelebracion{flex:1;overflow-y:auto;white-space:pre-wrap;font-size:clamp(20px,2.2vw,30px);line-height:1.25;padding:18px}.navegacion{display:flex;justify-content:space-between;gap:8px;padding:6px;background:#f5f5f5}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+body {
+  overflow-x: hidden;
+}
+header {
+  min-height: 58px;
+  background: #1565c0;
+  color: #fff;
+  padding: 8px 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+header h2 {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: 24px;
+}
+#estadoNube {
+  white-space: nowrap;
+}
+button {
+  padding: 9px 13px;
+  cursor: pointer;
+  border: 0;
+  border-radius: 5px;
+}
+.contenedor {
+  display: grid;
+  grid-template-columns: minmax(180px, 22%) minmax(260px, 38%) minmax(
+      300px,
+      40%
+    );
+  width: 100%;
+  height: calc(100vh - 58px);
+  min-height: 520px;
+}
+.panel {
+  overflow: auto;
+  background: #fff;
+  border-right: 1px solid #ddd;
+}
+.panelMomentos {
+  min-width: 0;
+}
+.tituloMomentos {
+  margin: 0;
+  padding: 16px 12px;
+  font-size: 20px;
+}
+.scrollMomentos {
+  width: 100%;
+}
+.momento {
+  padding: 10px 12px;
+  border-bottom: 3px solid #ddd;
+  cursor: pointer;
+}
+.momento:hover {
+  background: #e3f2fd;
+}
+.cancion {
+  padding: 10px 12px;
+  border-bottom: 2px solid #ddd;
+  cursor: pointer;
+}
+.cancion:hover {
+  background: #f0f0f0;
+}
+#buscador {
+  width: calc(100% - 20px);
+  margin: 10px;
+  padding: 9px;
+}
+#seleccion {
+  padding: 12px;
+  overflow: auto;
+  min-width: 0;
+  background: #f8f8f8;
+}
+#seleccion h3 {
+  margin-top: 4px;
+}
+.itemSeleccion {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-left: 5px solid #1565c0;
+  overflow-wrap: anywhere;
+}
+.completo {
+  background: #d4edda;
+}
+.incompleto {
+  background: #fff3cd;
+}
+#modoCelebracion {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+}
+#modoCelebracion.oculto,
+.oculto {
+  display: none;
+}
+#tituloCelebracion {
+  text-align: center;
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 20px;
+  line-height: 1.2;
+  background: #1565c0;
+  color: #fff;
+}
+#tituloCelebracion small {
+  font-size: 13px;
+  font-weight: normal;
+}
+#letraCelebracion {
+  flex: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-size: clamp(20px, 2.2vw, 30px);
+  line-height: 1.25;
+  padding: 18px;
+}
+.navegacion {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px;
+  background: #f5f5f5;
+}
 /* Tablet */
-@media (min-width:701px) and (max-width:1100px){header h2{font-size:22px}.contenedor{grid-template-columns:170px minmax(240px,1fr) minmax(260px,1fr)}.tituloMomentos{font-size:18px;padding:12px 10px}#seleccion{padding:10px}.itemSeleccion{padding:10px}}
+@media (min-width: 701px) and (max-width: 1100px) {
+  header h2 {
+    font-size: 22px;
+  }
+  .contenedor {
+    grid-template-columns: 170px minmax(240px, 1fr) minmax(260px, 1fr);
+  }
+  .tituloMomentos {
+    font-size: 18px;
+    padding: 12px 10px;
+  }
+  #seleccion {
+    padding: 10px;
+  }
+  .itemSeleccion {
+    padding: 10px;
+  }
+}
 /* Móvil */
-@media (max-width:700px){header{padding:6px 8px;gap:6px}header h2{font-size:21px;flex:1 0 100%}#estadoNube{margin-right:auto;font-size:12px}header button{padding:8px 10px}.contenedor{display:flex;flex-direction:column;height:auto;min-height:0}.panel{overflow:visible;border-right:0}.panelMomentos{overflow:hidden}.tituloMomentos{margin:0;padding:10px;font-size:18px}.scrollMomentos{display:flex;overflow-x:auto;overflow-y:hidden;white-space:nowrap;-webkit-overflow-scrolling:touch;border-bottom:1px solid #ddd}.momento{display:inline-block;flex:0 0 auto;min-width:105px;padding:10px;text-align:center;border-right:2px solid #ddd;border-bottom:0}.panel:nth-child(2){min-height:150px}#buscador{width:calc(100% - 16px);margin:8px}#seleccion{min-height:45vh;padding:10px}.itemSeleccion{padding:10px}#letraCelebracion{font-size:24px;padding:12px}.navegacion button{flex:1;padding:10px 4px}}
+@media (max-width: 700px) {
+  header {
+    padding: 6px 8px;
+    gap: 6px;
+  }
+  header h2 {
+    font-size: 21px;
+    flex: 1 0 100%;
+  }
+  #estadoNube {
+    margin-right: auto;
+    font-size: 12px;
+  }
+  header button {
+    padding: 8px 10px;
+  }
+  .contenedor {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+  }
+  .panel {
+    overflow: visible;
+    border-right: 0;
+  }
+  .panelMomentos {
+    overflow: hidden;
+  }
+  .tituloMomentos {
+    margin: 0;
+    padding: 10px;
+    font-size: 18px;
+  }
+  .scrollMomentos {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid #ddd;
+  }
+  .momento {
+    display: inline-block;
+    flex: 0 0 auto;
+    min-width: 105px;
+    padding: 10px;
+    text-align: center;
+    border-right: 2px solid #ddd;
+    border-bottom: 0;
+  }
+  .panel:nth-child(2) {
+    min-height: 150px;
+  }
+  #buscador {
+    width: calc(100% - 16px);
+    margin: 8px;
+  }
+  #seleccion {
+    min-height: 45vh;
+    padding: 10px;
+  }
+  .itemSeleccion {
+    padding: 10px;
+  }
+  #letraCelebracion {
+    font-size: 24px;
+    padding: 12px;
+  }
+  .navegacion button {
+    flex: 1;
+    padding: 10px 4px;
+  }
+}
