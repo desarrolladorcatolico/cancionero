@@ -305,19 +305,21 @@ vine a alabar a Dios.`,
 
   {
     id: 15,
-    titulo: "Kyrie",
-    autor: "Mercedes Sosa",
+    titulo: "Señor ten piedad",
+    autor: "N-N",
     categoria: "Perdon",
-    letra: `Señor, ten piedad de nosotros
+    letra: `Señor, Señor, Señor ten piedad.(BIS)
 
-Ten piedad
-Señor, ten piedad
-De nosotros
+    Cristo, Cristo, Cristo ten piedad. (BIS)
 
-Cristo, ten piedad de nosotros.`,
+    Señor, Señor, Señor ten piedad. (BIS)`,
   },
 
-  { id: 16, titulo: "", autor: "N-N", categoria: "Perdon", letra: `` },
+  { id: 16, titulo: "Aleluya", autor: "N-N", categoria: "Antifona", letra: `¡Aleluya, Aleluya, Aleluya!
+ 
+  ¡Aleluya, Aleluya, Aleluya!
+ 
+  ¡Aleluya, Aleluya, Aleluya!` },
 
   { id: 17, titulo: "", autor: "N-N", categoria: "Perdon", letra: `` },
 
@@ -765,15 +767,20 @@ que guardas en tu Inmaculado Corazón.
     titulo: "Santo II",
     autor: "N-N",
     categoria: "Santo",
-    letra: `Santo, santo, santo
-Santo es el señor
-Dios del universo
-Santo es el Señor
+    letra: `Santo, Santo, Santo es el Señor
+    Dios del universo.
+    Llenos están el Cielo y 
+    la tierra de tu Gloria, Hosanna!
 
-Hosanna en el cielo
-hosanna en las alturas
-bendito el que viene
-en nombre del Señor`,
+    ­Hosanna, Hosanna, Hosana en el Cielo!
+    ­Hosanna, Hosanna, Hosana en el Cielo!
+
+    Bendito el que viene
+    en nombre del Señor.
+    ­Hosanna en el cielo, Hosanna!
+    
+    ­Hosanna, Hosanna, Hosana en el Cielo!
+    ­Hosanna, Hosanna, Hosana en el Cielo!`,
   },
 
   {
@@ -850,7 +857,14 @@ con el Espíritu Santo en la gloria de Dios Padre.
 Amén,  a  a  a   a  mén. `,
   },
 
-  { id: 38, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 38, titulo: "Cordero V", autor: "N-N", categoria: "Cordero", letra: `Cordero de Dios que quitas el pecado del mundo,
+  ten piedad de nosotros, ten piedad de nosotros.
+  
+  Cordero de Dios que quitas el pecado del mundo,
+  ten piedad de nosotros, ten piedad de nosotros.
+  
+  Cordero de Dios, que quitas el pecado del mundo,
+  danos la paz, danos la paz.` },
 
   { id: 39, titulo: "", autor: "N-N", categoria: "", letra: `` },
 
