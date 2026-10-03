@@ -42,7 +42,7 @@ una esperanza que empapó nuestro esperar,
 aunque la noche nos envuelva en su inquietud
 nuestro amigo Jesús nos guiará.`},
 
-  {id: 4, titulo: 'Canten todos', autor: '', categoria: 'Entrada', letra: `Cante todos, la alegría de vivir en Dios.
+  {id: 4, titulo: 'Canten todos', autor: '', categoria: 'Entrada', letra: `Canten todos, la alegría de vivir en Dios.
 La buena noticia de Cristo Jesús,
 la entienden los pobres y es fuerza y es luz.
 Si estamos abiertos cuando habla el Señor
@@ -99,28 +99,45 @@ Unidos al rezar unidos en una canción
 viviremos nuestra fe
 con la ayuda del Señor.`},
 
-  {id: 8, titulo: 'La Vírgen María nos reune', autor: '', categoria: 'Entrada', letra: `La Virgen María nos reúne
+  {id: 8, titulo: 'La Vírgen María nos reune', autor: '', categoria: 'Entrada', letra: `La Virgen María nos reúne                       
 en nombre del Señor,
-del Señor Jesús, 
-Dios nuestro señor.
+del Señor Jesús,
+Dios nuestro Señor.
 
-
-Venimos a buscar
-el pan de la Palabra,
-Palabra del Señor
+   
+Venimos a buscar                      
+el pan de la Palabra     
+Palabra del Señor                          
 que reconforta el alma.
 
+   
+La Virgen María nos reúne                             
+en nombre del Señor,
+del Señor Jesús,
+Dios nuestro Señor.
 
+        
 Venimos a comer
-el pan sacramentado,
-el Cuerpo del Señor
+el Pan sacramentado
+el Cuerpo del Señor,
 Jesús resucitado.
 
 
+La Virgen María nos reúne
+en nombre del Señor,
+del Señor Jesús,
+Dios nuestro Señor.
+
+
 Venimos a llevar
-el pan de la alegría
-mensaje que nos dio
-el Hijo de María.`},
+el pan de la Alegría,
+mensaje que nos dió
+el hijo de María.
+
+La Virgen María nos reúne
+en nombre del Señor,
+del Señor Jesús,
+Dios nuestro Señor.`},
 
   {id: 9, titulo: 'Somos un pueblo que camina', autor: '', categoria: 'Entrada', letra: `Somos un pueblo que camina
 Y juntos caminando podremos alcanzar
@@ -456,99 +473,112 @@ tu familia en comunión
 y en el tiempo prolongamos
 la gracia de tu misión.`},
 
-  {id: 30, titulo: 'Sobre tu Altar', autor: 'N-N', categoria: 'Ofertorio', letra: `Sobre tu altar lo más preciado Señor
-sobre tu Altar mi pan y vino de amor.
-Sobre tu Altar mi vida entera.
+  {id: 30, titulo: 'Sobre tu Altar', autor: 'N-N', categoria: 'Ofertorio', letra: `Sobre tu altar, lo más preciado, Señor
+sobre tu altar mi pan y vino de amor
+sobre tu altar mi vida entera.
+----------------------------------------------------
 
-Mi pasado te lo doy
-mi presente contodo mi amor
-mi futuro lo pongo en tusmanos.
+Mi pasado Te lo doy
+mi presente con todo mi amor
+mi futuro lo pongo en tus manos.
+---------------------------------------------------
 
-Confiaré, no temeré
-Confiare, me entregaré
-Confiaré en Ti Señor
-Consagraré mi corazón a Tu amor
-A Dios mi Rey.
+Sobre tu altar Te dejo mi corazón
+sobre tu altar Te dejo mi voluntad
+sobre tu altar mi vida entera.
+--------------------------------------------------
 
-Sobre tu altar te dejo mi corazón
-Sobretu altar te dejo mi voluntad
-sobre tu Altar mi vida entera.`},
+Confiaré, no temeré,
+confiaré, me entregaré
+confiare en ti, Señor.
+consagraré mi corazón
+a tu amor, mi Dios, mi rey.`},
 
-  {id: 31, titulo: 'Te ofrecemos, Padre nuestro', autor: 'N-N', categoria: 'Colecta', letra: `Te ofrecemos, Padre nuestro
-con el vino y con el pan
-nuestras penas y alegrías,
-el trabajo y nuestro afán.
+  {id: 31, titulo: 'Te ofrecemos, Padre nuestro', autor: 'N-N', categoria: 'Colecta', letra: `Te ofrecemos Padre Nuestro,
+este vino y este pan,
+junto con ellos te damos,
+el trabajo y el dolor,
+la dicha de ser tus hijos,
+la alegría y el amor.
 
-Como el trigo de los campos
-bajo el signo de la cruz,
-se transformen nuestras vidas
-en el Cuerpo de Jesús.
-
-A los pobres de la Tierra
-a los que sufriendo están,
-cambia su dolor en vino
-como la uva en lagar.
-
-Estos dones son el signo
-del esfuerzo de unidad,
-que los hombres realizamos
-en el campo y la ciudad.`},
+Te lo ofrecemos por Cristo,
+que con nosotros esta,
+este pan será su cuerpo,
+el vino sangre se hará,
+perdona nuestros pecados,
+y haz que vivamos en paz.`},
 
   {id: 32, titulo: 'Vida en Abundancia', autor: 'N-N', categoria: 'Comunion', letra: `Los lirios del campo y las aves del cielo
-No se preocupan porque están en mis manos
-Tené confianza en mí
-Acá estoy junto a vos
- 
-Amá lo que sos y tus circunstancias
-Estoy con vos, con tu cruz en mi espalda
-Todo terminará bien
-Yo hago nuevas todas las cosas
+no se preocupan por que están en mis manos
+tené confianza en mí,
+aqui estoy juunto a voos.
 
 
-	Yo vengo a traerte vida
-	Vida en abundancia, en abundancia
-	Yo soy el camino, la verdad y la vida
-	Vida en abundancia, en abundancia
+Amá lo que sos y tus circunstancias,
+estoy con vos, con tu cruz en mi espalda,
+todo terminará bien
+yo hago nuevas todas las cosas.
 
 
-No hice al hombre para que esté solo
-Caminen juntos como hermanos
-Sopórtense mutuamente
-Ámense unos a otros
+ESTRIBILLO
+YO VEENGO A TRAERTE VIIDA,
+VIDA EN ABUNDANCIA
+EN ABUNDANCIA.
+
+YO SOY EL CAMIINO,
+LA VERDAD Y LA VIIIDA,
+VIDA EN ABUNDANCIA,
+EN ABUNDANCIA.
+
+
+No hice al hombre para que esté solo,
+caminen juntos como hermanos.
+Sopórtense mutuamente,
+ámense unos a otros
 
 La felicidad de la vida eterna
-Empieza conmigo en la tierra
-Sentite vivo
-La fiesta del reino comienza acá
+empieeza conmigo en la tieerra
+sentiite vivo,
+la fiesta del reino comienza acá.
+
+ESTRIBILLO
+
+Animo tus sueños y tus proyectos,
+todas tus búsquedas y tus anheelos
+Ya oí tu plegaria,
+arrojate a la esperaanza.
 
 
-Animos tu sueños y tus proyectos,
-todas tus búsquedas y tus anhelos
-Ya oí tu plegaria
-arrojate a la esperanza.
+Subí a mi barca, navegá mar adentro,     
+en lo profundo estálo verdadeero.
+Animaate a volar,
+la aventura dee confiaar.
 
-Subí a mi barca, navegá mar adentro,
-en lo profundo está lo verdadero.
-Animate a volar 
-la aventura de confiar.`},
+ESTRIBILLO.`},
 
-  {id: 33, titulo: 'Señora del Santo Rosario', autor: 'N-N', categoria: 'Himno', letra: `¡Salve, Madre de Dios!
-¡Salve, Reina del Cielo!
-¡Señora del Santo Rosario!
-Hoy tus hijos te aclaman:
-¡Oh, Llena de Gracia,
-ruega por nostros a Dios!
+  {id: 33, titulo: 'Señora del Santo Rosario', autor: 'N-N', categoria: 'Himno', letra: `(Estribillo) 
+
+¡Salve, Madre de Dios! 
+¡Salve, Reina del Cielo! 
+¡Señora del Santo Rosario! 
+Hoy tus hijos te aclaman: 
+¡Oh, Llena de Gracia, 
+ruega por nosotros a Dios! 
 ¡Ruega por nosotros a Dios!
 
-Tú creiste, oh María,
-el anuncio del ángel del Señor
-y por tu fe, Llena de Gracia,
-concebiste en tu seno al Salvador.
+Tú creíste, oh María, 
+el anuncio del ángel del Señor 
+y por tu fe, Llena de Gracia, 
+concebiste en tu seno al Salvador. 
+
+(Estribillo)
 
 Tu rosario, oh María, 
 es escuela santa de contemplación, 
 ábrenos hoy ese tesoro 
-que guardas en tu Inmaculado Corazón.`},
+que guardas en tu Inmaculado Corazón.
+
+(Estribillo)`},
 
   {id: 34, titulo: 'Santo II', autor: 'N-N', categoria: 'Santo', letra: `Santo, santo, santo
 Santo es el señor
@@ -580,7 +610,41 @@ canta tu grandeza la hermosa creación;
 junto con sus voces, suba nuestro canto:
 Hosanna, hosanna, hosanna a nuestro Dios. `},
 
-  {id: 37, titulo: '', autor: 'N-N', categoria: '', letra: ``},
+  {id: 37, titulo: 'Gloria Cong. Euc.', autor: 'N-N', categoria: 'Gloria', letra: `Gloria a Dios en el cielo y en la tierra paz					
+
+a todos los hombres que ama el Señor   (BIS)
+
+Por tu inmensa gloria te alabamos,
+
+te bendecimos, te adoramos    
+
+te glorificamos te damos gracias Señor Dios
+
+Rey celestial, Dios Padre Todopoderoso.
+
+Señor, Hijo Único, Jesucristo.
+
+Señor Dios, Cordero de Dios, Hijo del Padre.
+
+Tú que quitas el pecado del mundo
+
+ten piedad de nosotros,								
+
+Tú que quitas el pecado del mundo
+
+atiende nuestras súplicas
+
+Tú que estás sentado a la derecha del Padre
+
+ten piedad de nosotros.
+
+Porque sólo Tú eres Santo, sólo Tú Señor,
+
+solo Tú Altísimo Jesucristo
+
+con el Espíritu Santo en la gloria de Dios Padre.  
+
+Amén,  a  a  a   a  mén. `},
 
   {id: 38, titulo: '', autor: 'N-N', categoria: '', letra: ``},
 
