@@ -308,18 +308,18 @@ vine a alabar a Dios.`,
     titulo: "Señor ten piedad",
     autor: "N-N",
     categoria: "Perdon",
-    letra: ` Señor, Señor, Señor ten piedad.(BIS)
+    letra: `Señor, Señor, Señor ten piedad.(BIS)
 
-  Cristo, Cristo, Cristo ten piedad. (BIS)
+Cristo, Cristo, Cristo ten piedad. (BIS)
 
-  Señor, Señor, Señor ten piedad. (BIS)`,
+Señor, Señor, Señor ten piedad. (BIS)`,
   },
 
   { id: 16, titulo: "Aleluya", autor: "N-N", categoria: "Antifona", letra: `¡Aleluya, Aleluya, Aleluya!
  
-  ¡Aleluya, Aleluya, Aleluya!
+¡Aleluya, Aleluya, Aleluya!
  
-  ¡Aleluya, Aleluya, Aleluya!` },
+¡Aleluya, Aleluya, Aleluya!` },
 
   { id: 17, titulo: "", autor: "N-N", categoria: "Perdon", letra: `` },
 
@@ -768,19 +768,19 @@ que guardas en tu Inmaculado Corazón.
     autor: "N-N",
     categoria: "Santo",
     letra: `Santo, Santo, Santo es el Señor
-  Dios del universo.
-  Llenos están el Cielo y 
-  la tierra de tu Gloria, Hosanna!
+Dios del universo.
+Llenos están el Cielo y 
+la tierra de tu Gloria, Hosanna!
 
-  ­Hosanna, Hosanna, Hosanna en el Cielo!
-  ­Hosanna, Hosanna, Hosanna en el Cielo!
+­Hosanna, Hosanna, Hosanna en el Cielo!
+­Hosanna, Hosanna, Hosanna en el Cielo!
 
-  Bendito el que viene
-  en nombre del Señor.
-  ­Hosanna en el cielo, Hosanna!
+Bendito el que viene
+en nombre del Señor.
+­Hosanna en el cielo, Hosanna!
     
-  ­Hosanna, Hosanna, Hosanna en el Cielo!
-  ­Hosanna, Hosanna, Hosanna en el Cielo!`,
+­Hosanna, Hosanna, Hosanna en el Cielo!
+­Hosanna, Hosanna, Hosanna en el Cielo!`,
   },
 
   {
