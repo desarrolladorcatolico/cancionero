@@ -1,5 +1,73 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cancionero Litúrgico</title>
-  <link rel="stylesheet" href="css/estilos.css">
-  <link rel="icon" type="image/x-png" href="favicon-32x32.png">
-</head>
-  <body><header><h2>Cancionero</h2><span id="estadoNube" style="font-size:12px">☁ Conectando...</span><button onclick="iniciarCelebracion()">▶ Iniciar</button><button onclick="nuevaCelebracion()">🗑 Nuevo</button></header><div class="contenedor"><div class="panel panelMomentos"><h3 class="tituloMomentos">Momentos Litúrgicos</h3><div class="scrollMomentos"><div class="momento" onclick="cargar('Entrada')">Entrada</div><div class="momento" onclick="cargar('Perdon')">Perdón</div><div class="momento" onclick="cargar('Gloria')">Gloria</div><div class="momento" onclick="cargar('Colecta')">Colecta</div><div class="momento" onclick="cargar('Ofertorio')">Ofertorio</div><div class="momento" onclick="cargar('Santo')">Santo</div><div class="momento" onclick="cargar('Comunion')">Comunión</div><div class="momento" onclick="cargar('ComunionII')">Comunión II</div><div class="momento" onclick="cargar('Salida')">Salida</div><div class="momento" onclick="cargar('Himno')">Himno</div></div></div><div class="panel"><input id="buscador" placeholder="Buscar canción..." onkeyup="buscar()"><div id="listaCanciones"></div></div><div id="seleccion"><h3>Celebración del Día</h3><div style="background:#fff3cd;padding:8px;margin-bottom:8px;border-radius:4px"><b>⚠ Selección compartida:</b> los cambios se guardan para todos. Por favor, no modificar si la celebración ya está preparada.</div><div id="listaSeleccion"></div></div></div><div id="modoCelebracion" class="oculto"><h1 id="tituloCelebracion"></h1><div id="letraCelebracion"></div><div class="navegacion"><button onclick="anterior()">◀ Anterior</button><button onclick="cerrarCelebracion()">❌ Cerrar</button><button onclick="siguiente()">▶ Siguiente</button></div></div><script src="js/canciones.js"></script><script src="js/app.js"></script><script type="module" src="js/firebase.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cancionero Litúrgico</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="icon" type="image/x-png" href="favicon-32x32.png" />
+  </head>
+  <body>
+    <header>
+      <h2>Cancionero</h2>
+      <span id="estadoNube" style="font-size: 12px">☁ Conectando...</span
+      ><button onclick="iniciarCelebracion()">▶ Iniciar</button
+      ><button onclick="nuevaCelebracion()">🗑 Nuevo</button>
+    </header>
+    <div class="contenedor">
+      <div class="panel panelMomentos">
+        <h3 class="tituloMomentos">Momentos Litúrgicos</h3>
+        <div class="scrollMomentos">
+          <div class="momento" onclick="cargar('Entrada')">Entrada</div>
+          <div class="momento" onclick="cargar('Perdon')">Perdón</div>
+          <div class="momento" onclick="cargar('Gloria')">Gloria</div>
+          <div class="momento" onclick="cargar('Antifona')">Antifona/div>
+          <div class="momento" onclick="cargar('Colecta')">Colecta</div>
+          <div class="momento" onclick="cargar('Ofertorio')">Ofertorio</div>
+          <div class="momento" onclick="cargar('Santo')">Santo</div>
+          <div class="momento" onclick="cargar('Padrenuestro')">Padrenuestro/div>
+          <div class="momento" onclick="cargar('Cordero')">Cordero/div>
+          <div class="momento" onclick="cargar('Comunion')">Comunión</div>
+          <div class="momento" onclick="cargar('ComunionII')">Comunión II</div>
+          <div class="momento" onclick="cargar('Salida')">Salida</div>
+          <div class="momento" onclick="cargar('Himno')">Himno</div>
+        </div>
+      </div>
+      <div class="panel">
+        <input
+          id="buscador"
+          placeholder="Buscar canción..."
+          onkeyup="buscar()"
+        />
+        <div id="listaCanciones"></div>
+      </div>
+      <div id="seleccion">
+        <h3>Celebración del Día</h3>
+        <div
+          style="
+            background: #fff3cd;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4 px;
+          "
+        >
+          <b>⚠ Selección compartida:</b> los cambios se guardan para todos. Por
+          favor, no modificar si la celebración ya está preparada.
+        </div>
+        <div id="listaSeleccion"></div>
+      </div>
+    </div>
+    <div id="modoCelebracion" class="oculto">
+      <h1 id="tituloCelebracion"></h1>
+      <div id="letraCelebracion"></div>
+      <div class="navegacion">
+        <button onclick="anterior()">◀ Anterior</button
+        ><button onclick="cerrarCelebracion()">❌ Cerrar</button
+        ><button onclick="siguiente()">▶ Siguiente</button>
+      </div>
+    </div>
+    <script src="js/canciones.js"></script>
+    <script src="js/app.js"></script>
+    <script type="module" src="js/firebase.js"></script>
+  </body>
+</html>
