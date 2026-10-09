@@ -1,94 +1,14 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import {
-  getFirestore, doc, getDoc, setDoc, collection, getDocs
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDsgYJ3OGJ2JQfXX9l2CO-V26-v90sKFAY",
-  authDomain: "cancionerodominico.firebaseapp.com",
-  projectId: "cancionerodominico",
-  storageBucket: "cancionerodominico.firebasestorage.app",
-  messagingSenderId: "1019835999965",
-  appId: "1:1019835999965:web:4a30265a4d1cc69ba65d34",
-  measurementId: "G-2DE8QCPQ1B",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const refCelebracion = doc(db, "celebraciones", "actual");
-const estado = document.getElementById("estadoNube");
-const CACHE_KEY = "catalogoCancionesFirestore";
-
-function adaptarCancionesFirestore(docs) {
-  const resultado = [];
-  for (const snap of docs) {
-    const d = snap.data();
-    if (d.activo === false || d.estado !== "PUBLICADA") continue;
-    const momentos = Array.isArray(d.momentos) ? d.momentos : [];
-    for (const categoria of momentos) {
-      resultado.push({
-        id: Number(d.id ?? snap.id), titulo: d.titulo || "", autor: d.autor || "",
-        categoria, letra: d.letra || "", tono: d.tono || "", acordes: d.acordes || ""
-      });
-    }
-  }
-  return resultado.sort((a,b) => a.id - b.id);
-}
-
-async function cargarCatalogo() {
-  try {
-    const snap = await getDocs(collection(db, "canciones"));
-    const catalogo = adaptarCancionesFirestore(snap.docs);
-    if (!catalogo.length) throw new Error("Firestore devolvió un catálogo vacío");
-    localStorage.setItem(CACHE_KEY, JSON.stringify(catalogo));
-    window.dispatchEvent(new CustomEvent("catalogo-cargado", {detail:{canciones:catalogo, origen:"firebase"}}));
-    return "firebase";
-  } catch (e) {
-    console.warn("No se pudo cargar catálogo desde Firestore:", e);
-    try {
-      const cache = JSON.parse(localStorage.getItem(CACHE_KEY) || "[]");
-      if (Array.isArray(cache) && cache.length) {
-        window.dispatchEvent(new CustomEvent("catalogo-cargado", {detail:{canciones:cache, origen:"cache"}}));
-        return "cache";
-      }
-    } catch (_) {}
-    window.dispatchEvent(new CustomEvent("catalogo-cargado", {detail:{canciones:null, origen:"local"}}));
-    return "local";
-  }
-}
-
-async function cargarCelebracion() {
-  try {
-    const s = await getDoc(refCelebracion);
-    if (s.exists()) window.aplicarSeleccionRemota(s.data().seleccion || {});
-    return true;
-  } catch (e) {
-    console.error(e); return false;
-  }
-}
-
-async function iniciarFirebase() {
-  estado.textContent = "☁ Conectando...";
-  const origen = await cargarCatalogo();
-  const celebracionOk = await cargarCelebracion();
-  if (origen === "firebase" && celebracionOk) estado.textContent = "☁ Sincronizado";
-  else if (origen === "cache") estado.textContent = "☁ Catálogo offline";
-  else if (origen === "local") estado.textContent = "⚠ Catálogo local";
-  else estado.textContent = "⚠ Sin conexión Firebase";
-}
-
-let timer;
-window.addEventListener("celebracion-cambiada", (e) => {
-  clearTimeout(timer);
-  timer = setTimeout(async () => {
-    try {
-      estado.textContent = "☁ Guardando...";
-      await setDoc(refCelebracion, { seleccion: e.detail, actualizada: new Date().toISOString() });
-      estado.textContent = "☁ Guardado";
-    } catch (err) {
-      console.error(err); estado.textContent = "⚠ No se pudo guardar";
-    }
-  }, 300);
-});
-
-iniciarFirebase();
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import{getFirestore,doc,getDoc,setDoc,collection,getDocs}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+const firebaseConfig={apiKey:"AIzaSyDsgYJ3OGJ2JQfXX9l2CO-V26-v90sKFAY",authDomain:"cancionerodominico.firebaseapp.com",projectId:"cancionerodominico",storageBucket:"cancionerodominico.firebasestorage.app",messagingSenderId:"1019835999965",appId:"1:1019835999965:web:4a30265a4d1cc69ba65d34",measurementId:"G-2DE8QCPQ1B"};
+const app=initializeApp(firebaseConfig),db=getFirestore(app),auth=getAuth(app),estado=document.getElementById("estadoNube"),refCompartida=doc(db,"celebraciones","actual"),CACHE="catalogoCancionesFirestore";
+function adaptar(ds){const r=[];for(const s of ds){const d=s.data();if(d.activo===false||d.estado!=="PUBLICADA")continue;for(const categoria of(Array.isArray(d.momentos)?d.momentos:[]))r.push({id:Number(d.id??s.id),titulo:d.titulo||"",autor:d.autor||"",categoria,letra:d.letra||"",tono:d.tono||"",acordes:d.acordes||""})}return r.sort((a,b)=>a.id-b.id)}
+async function cargarCatalogo(){try{const s=await getDocs(collection(db,"canciones")),c=adaptar(s.docs);if(!c.length)throw Error("Catálogo vacío");localStorage.setItem(CACHE,JSON.stringify(c));window.dispatchEvent(new CustomEvent("catalogo-cargado",{detail:{canciones:c,origen:"firebase"}}));return"firebase"}catch(e){console.warn(e);try{const c=JSON.parse(localStorage.getItem(CACHE)||"[]");if(c.length){window.dispatchEvent(new CustomEvent("catalogo-cargado",{detail:{canciones:c,origen:"cache"}}));return"cache"}}catch(_){}window.dispatchEvent(new CustomEvent("catalogo-cargado",{detail:{canciones:null,origen:"local"}}));return"local"}}
+async function cargarCompartida(){try{const s=await getDoc(refCompartida);const ids=s.exists()?s.data().seleccion||{}:{};window.aplicarCelebracionCompartida?.(ids);return true}catch(e){console.warn(e);return false}}
+async function cargarPerfil(user){if(!user){window.actualizarPerfilSesion?.(null);return null}try{const s=await getDoc(doc(db,"usuarios",user.uid));if(!s.exists())throw Error("Perfil no encontrado");const p=s.data();if(p.activo!==true)throw Error("Usuario inactivo");const perfil={uid:user.uid,email:user.email,nombre:p.nombre||"",rol:p.rol,activo:p.activo};window.actualizarPerfilSesion?.(perfil);return perfil}catch(e){console.warn(e);window.actualizarPerfilSesion?.(null);return null}}
+onAuthStateChanged(auth,cargarPerfil);
+window.addEventListener("solicitar-login",async()=>{const email=prompt("Correo electrónico:");if(!email)return;const password=prompt("Contraseña:");if(!password)return;try{await signInWithEmailAndPassword(auth,email.trim(),password)}catch(e){alert("No se pudo iniciar sesión. Verifica correo y contraseña.");console.error(e)}});
+window.addEventListener("solicitar-logout",()=>signOut(auth));
+let timer;window.addEventListener("celebracion-compartida-cambiada",e=>{clearTimeout(timer);timer=setTimeout(async()=>{try{estado.textContent="☁ Guardando...";await setDoc(refCompartida,{seleccion:e.detail,actualizada:new Date().toISOString()});estado.textContent="☁ Guardado"}catch(err){console.error(err);estado.textContent="⚠ No se pudo guardar"}},300)});
+(async()=>{estado.textContent="☁ Conectando...";const origen=await cargarCatalogo(),ok=await cargarCompartida();estado.textContent=origen==="firebase"&&ok?"☁ Sincronizado":origen==="cache"?"☁ Catálogo offline":origen==="local"?"⚠ Catálogo local":"⚠ Sin conexión Firebase"})();
