@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Prueba Firebase Authentication - Cancionero</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#1f2937;font-family:Arial,sans-serif}main{max-width:640px;margin:30px auto;padding:16px}.card{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 3px 14px #0001}h1{font-size:23px;margin-top:0}h2{font-size:18px}label{display:block;font-weight:700;margin:12px 0 5px}input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px}button{border:0;border-radius:7px;padding:11px 15px;font-weight:700;cursor:pointer;margin:12px 8px 0 0}.primary{background:#1565c0;color:#fff}.secondary{background:#e5e7eb}.danger{background:#b91c1c;color:#fff}.ok{color:#15803d}.bad{color:#b91c1c}.muted{color:#64748b}.hidden{display:none}pre{white-space:pre-wrap;background:#111827;color:#e5e7eb;padding:14px;border-radius:8px;overflow:auto}.warning{background:#fff7ed;border-left:4px solid #f59e0b;padding:12px;border-radius:6px}
+  </style>
+</head>
+<body><main>
+  <section class="card">
+    <h1>Prueba Firebase Authentication</h1>
+    <p>Valida el circuito <strong>Authentication → UID → usuarios/{UID} → rol</strong> sin modificar el Cancionero.</p>
+    <div class="warning">Usa una cuenta que ya hayas creado en Firebase Authentication y cuyo UID exista como documento en la colección <code>usuarios</code>.</div>
+  </section>
+
+  <section class="card" id="loginBox">
+    <h2>Iniciar sesión</h2>
+    <label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username">
+    <label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password">
+    <button class="primary" id="login">Iniciar sesión</button>
+    <p id="estado" class="muted">Esperando inicio de sesión.</p>
+  </section>
+
+  <section class="card hidden" id="perfilBox">
+    <h2>Sesión activa</h2>
+    <pre id="perfil"></pre>
+    <button class="danger" id="logout">Cerrar sesión</button>
+  </section>
+
+  <section class="card"><h2>Diagnóstico</h2><pre id="log">Inicializando Firebase…</pre></section>
+</main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyDsgYJ3OGJ2JQfXX9l2CO-V26-v90sKFAY",
+  authDomain:"cancionerodominico.firebaseapp.com",
+  projectId:"cancionerodominico",
+  storageBucket:"cancionerodominico.firebasestorage.app",
+  messagingSenderId:"1019835999965",
+  appId:"1:1019835999965:web:4a30265a4d1cc69ba65d34",
+  measurementId:"G-2DE8QCPQ1B"
+};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+function log(t){$('log').textContent=t}
+function errorTexto(e){return `${e.code||'ERROR'}: ${e.message||e}`}
+
+$('login').onclick=async()=>{
+  const email=$('email').value.trim(),password=$('password').value;
+  if(!email||!password){$('estado').innerHTML='<span class="bad">Introduce correo y contraseña.</span>';return}
+  $('login').disabled=true;$('estado').textContent='Iniciando sesión…';log('Autenticando usuario…');
+  try{await signInWithEmailAndPassword(auth,email,password)}catch(e){$('estado').innerHTML='<span class="bad">✗ '+errorTexto(e)+'</span>';log(errorTexto(e));$('login').disabled=false}
+};
+$('logout').onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,async user=>{
+  if(!user){$('loginBox').classList.remove('hidden');$('perfilBox').classList.add('hidden');$('login').disabled=false;$('estado').textContent='Sin sesión activa.';log('Firebase inicializado. Sin sesión activa.');return}
+  $('estado').innerHTML='<span class="ok">✓ Authentication correcto. Leyendo perfil…</span>';log(`Authentication OK\nUID: ${user.uid}\nBuscando usuarios/${user.uid}…`);
+  try{
+    const snap=await getDoc(doc(db,'usuarios',user.uid));
+    if(!snap.exists())throw new Error('No existe el documento usuarios/'+user.uid);
+    const p=snap.data();
+    const rol=p.rol||'';
+    if(!['ADMINISTRADOR','COLABORADOR'].includes(rol))throw new Error('Rol no reconocido: '+rol);
+    if(p.activo!==true)throw new Error('El perfil existe pero activo no es true.');
+    $('perfil').textContent=`✓ SESIÓN INICIADA\n\nNombre: ${p.nombre||''}\nEmail: ${user.email||p.email||''}\nUID: ${user.uid}\nRol: ${rol}\nActivo: ${p.activo}`;
+    $('loginBox').classList.add('hidden');$('perfilBox').classList.remove('hidden');log('✓ Authentication correcto\n✓ Perfil Firestore encontrado\n✓ Rol válido\n✓ Usuario activo');
+  }catch(e){
+    $('perfilBox').classList.add('hidden');$('loginBox').classList.remove('hidden');$('estado').innerHTML='<span class="bad">✗ Login correcto, pero no se pudo validar el perfil.</span>';log(errorTexto(e));
+  }
+});
+</script></body></html>
