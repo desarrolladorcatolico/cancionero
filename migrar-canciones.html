@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Migrador de canciones a Firestore</title>
+  <style>
+    *{box-sizing:border-box} body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#1f2937}
+    main{max-width:850px;margin:30px auto;padding:0 16px}.card{background:white;border-radius:12px;padding:20px;box-shadow:0 3px 14px #0001;margin-bottom:16px}
+    h1{font-size:24px;margin-top:0}.warn{background:#fff7ed;border-left:4px solid #f59e0b;padding:12px;border-radius:6px}
+    label{display:block;font-weight:700;margin-top:10px} input{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:6px;margin-top:4px}
+    button{border:0;border-radius:7px;padding:11px 15px;font-weight:700;cursor:pointer;margin:8px 8px 0 0}.primary{background:#1565c0;color:white}.secondary{background:#e5e7eb}.danger{background:#b91c1c;color:white}
+    button:disabled{opacity:.5;cursor:not-allowed} pre{white-space:pre-wrap;background:#111827;color:#e5e7eb;padding:14px;border-radius:8px;max-height:360px;overflow:auto}
+    .ok{color:#15803d}.bad{color:#b91c1c}.muted{color:#64748b;font-size:14px}
+  </style>
+</head>
+<body>
+<main>
+  <section class="card">
+    <h1>Migrador seguro: canciones.js → Firestore</h1>
+    <p>Esta herramienta prueba únicamente las canciones con ID <strong>1, 2 y 3</strong>. No modifica <code>canciones.js</code>.</p>
+    <div class="warn"><strong>Prueba controlada:</strong> si el documento ya existe, por defecto se omite para evitar sobrescribir datos accidentalmente.</div>
+  </section>
+
+  <section class="card">
+    <h2>1. Configuración Firebase</h2>
+    <p class="muted">Pega los valores de la aplicación web del mismo proyecto Firebase que ya usa tu Cancionero.</p>
+    <label>apiKey<input id="apiKey"></label>
+    <label>authDomain<input id="authDomain"></label>
+    <label>projectId<input id="projectId"></label>
+    <label>storageBucket<input id="storageBucket"></label>
+    <label>messagingSenderId<input id="messagingSenderId"></label>
+    <label>appId<input id="appId"></label>
+    <button class="secondary" id="guardarConfig">Guardar configuración local</button>
+    <button class="primary" id="conectar">Conectar</button>
+    <div id="estado" class="muted" style="margin-top:12px">Sin conectar.</div>
+  </section>
+
+  <section class="card">
+    <h2>2. Migración de prueba</h2>
+    <label style="font-weight:normal"><input type="checkbox" id="sobrescribir" style="width:auto"> Sobrescribir documentos existentes (usar solo si quieres repetir la prueba)</label>
+    <button class="primary" id="migrar" disabled>Migrar IDs 1, 2 y 3</button>
+    <button class="secondary" id="verificar" disabled>Verificar en Firestore</button>
+    <pre id="log">Esperando…</pre>
+  </section>
+</main>
+
+<script src="js/canciones.js"></script>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
+  import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
+
+  const $ = id => document.getElementById(id);
+  const CONFIG_KEY = 'cancionero_firebase_config_migrador';
+  const TEST_IDS = [1,2,3];
+  let db = null;
+
+  function linea(txt){ $('log').textContent += ( $('log').textContent === 'Esperando…' ? '' : '\n') + txt; }
+  function limpiarLog(){ $('log').textContent=''; }
+  function configDesdeFormulario(){
+    return { apiKey:$('apiKey').value.trim(), authDomain:$('authDomain').value.trim(), projectId:$('projectId').value.trim(), storageBucket:$('storageBucket').value.trim(), messagingSenderId:$('messagingSenderId').value.trim(), appId:$('appId').value.trim() };
+  }
+  function cargarConfig(){
+    try { const c=JSON.parse(localStorage.getItem(CONFIG_KEY)||'null'); if(!c)return; Object.entries(c).forEach(([k,v])=>{if($(k))$(k).value=v||''}); } catch(e){}
+  }
+  function validarConfig(c){ return c.apiKey && c.authDomain && c.projectId && c.appId; }
+
+  $('guardarConfig').onclick=()=>{
+    const c=configDesdeFormulario();
+    if(!validarConfig(c)){ alert('Faltan datos esenciales de Firebase.'); return; }
+    localStorage.setItem(CONFIG_KEY,JSON.stringify(c));
+    $('estado').textContent='Configuración guardada localmente.';
+  };
+
+  $('conectar').onclick=()=>{
+    try{
+      const c=configDesdeFormulario();
+      if(!validarConfig(c)) throw new Error('Faltan datos esenciales de Firebase.');
+      const app=initializeApp(c,'migrador-'+Date.now());
+      db=getFirestore(app);
+      $('estado').innerHTML='<span class="ok">✓ Firebase inicializado para '+c.projectId+'</span>';
+      $('migrar').disabled=false; $('verificar').disabled=false;
+    }catch(e){ $('estado').innerHTML='<span class="bad">✗ '+e.message+'</span>'; }
+  };
+
+  function obtenerCanciones(){
+    if(typeof canciones === 'undefined' || !Array.isArray(canciones)) throw new Error('No se pudo cargar js/canciones.js. Comprueba que este HTML esté en la raíz del proyecto.');
+    return canciones;
+  }
+
+  function transformar(c){
+    return {
+      id:c.id,
+      titulo:(c.titulo||'').trim(),
+      autor:(c.autor||'').trim(),
+      momentos:c.categoria ? [c.categoria] : [],
+      letra:c.letra||'',
+      tono:'',
+      acordes:'',
+      estado:'PUBLICADA',
+      activo:true,
+      creadoPor:'migracion-inicial',
+      origen:'canciones.js',
+      actualizadoAt:serverTimestamp()
+    };
+  }
+
+  $('migrar').onclick=async()=>{
+    if(!db)return;
+    limpiarLog();
+    let subidas=0, omitidas=0, errores=0;
+    try{
+      const lista=obtenerCanciones();
+      for(const id of TEST_IDS){
+        const c=lista.find(x=>x.id===id);
+        if(!c || !(c.titulo||'').trim()){ linea('⊘ ID '+id+' - OMITIDA: inexistente o sin título'); omitidas++; continue; }
+        try{
+          const ref=doc(db,'canciones',String(id));
+          const existe=await getDoc(ref);
+          if(existe.exists() && !$('sobrescribir').checked){ linea('⊘ ID '+id+' - '+c.titulo+' - OMITIDA: ya existe'); omitidas++; continue; }
+          await setDoc(ref,transformar(c));
+          linea('✓ ID '+id+' - '+c.titulo+' - SUBIDA'); subidas++;
+        }catch(e){ linea('✗ ID '+id+' - ERROR: '+e.message); errores++; }
+      }
+      linea('\nRESUMEN: '+subidas+' subidas · '+omitidas+' omitidas · '+errores+' errores');
+    }catch(e){ linea('ERROR GENERAL: '+e.message); }
+  };
+
+  $('verificar').onclick=async()=>{
+    if(!db)return;
+    limpiarLog();
+    for(const id of TEST_IDS){
+      try{
+        const snap=await getDoc(doc(db,'canciones',String(id)));
+        if(!snap.exists()){ linea('✗ ID '+id+' - no existe en Firestore'); continue; }
+        const d=snap.data();
+        linea('✓ ID '+id+' - '+d.titulo+' | momentos: '+JSON.stringify(d.momentos)+' | estado: '+d.estado+' | activo: '+d.activo);
+      }catch(e){ linea('✗ ID '+id+' - ERROR: '+e.message); }
+    }
+  };
+
+  cargarConfig();
+</script>
+</body>
+</html>
