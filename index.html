@@ -165,6 +165,22 @@
     window.rechazarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{estado:'RECHAZADA',activo:false,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta rechazada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
 
 
+    // Asegura que el acceso a Mis propuestas aparezca en el menu del colaborador/admin
+    function asegurarBotonMisPropuestas(){
+      const enlaceProponer=[...document.querySelectorAll('a')].find(a=>(a.getAttribute('href')||'').includes('proponer-cancion.html'));
+      if(!enlaceProponer || document.getElementById('btnMisPropuestas')) return;
+      const a=document.createElement('a');
+      a.id='btnMisPropuestas';
+      a.href='mis-propuestas.html';
+      a.textContent='Mis propuestas';
+      a.className=enlaceProponer.className;
+      a.style.cssText=enlaceProponer.style.cssText;
+      enlaceProponer.insertAdjacentElement('afterend',a);
+    }
+    const obsMisPropuestas=new MutationObserver(asegurarBotonMisPropuestas);
+    obsMisPropuestas.observe(document.body,{childList:true,subtree:true});
+    asegurarBotonMisPropuestas();
+
     // Panel integrado Mis propuestas
     const mp=id=>document.getElementById(id);
     function estadoClase(estado){return estado==='PUBLICADA'?'estado-publicada':estado==='RECHAZADA'?'estado-rechazada':'estado-pendiente'}
