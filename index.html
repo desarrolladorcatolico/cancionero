@@ -16,6 +16,13 @@
     .propuesta-acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.propuesta-acciones button{padding:11px 15px;border:0;border-radius:7px;font-weight:700;cursor:pointer}
     .propuesta-primary{background:#1565c0;color:#fff}.propuesta-secondary{background:#e5e7eb;color:#1f2937}.propuesta-ok{color:#15803d}.propuesta-bad{color:#b91c1c}
     .propuesta-ayuda{color:#475569;font-size:14px}.propuesta-resultado{min-height:22px}
+
+    .pendientes-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10001;padding:18px;overflow:auto}
+    .pendientes-overlay.abierto{display:block}.pendientes-modal{max-width:900px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}
+    .pendientes-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}
+    .pendiente-item{border:1px solid #e2e8f0;border-radius:10px;padding:15px;margin-top:12px}.pendiente-muted{color:#64748b}.pendientes-estado{color:#64748b;font-size:14px}
+    .pendientes-modal label{font-weight:700;display:block;margin-top:10px}.pendientes-modal input,.pendientes-modal textarea{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:7px;margin:5px 0;box-sizing:border-box}.pendientes-modal textarea{min-height:180px}
+    .pendiente-ok,.pendiente-bad,.pendiente-blue{padding:10px 13px;border:0;border-radius:7px;font-weight:700;margin:6px 5px 0 0;cursor:pointer}.pendiente-ok{background:#15803d;color:#fff}.pendiente-bad{background:#b91c1c;color:#fff}.pendiente-blue{background:#1565c0;color:#fff}
   </style>
 </head>
 <body>
@@ -55,13 +62,27 @@
     </section>
   </div>
 
+
+  <div id="pendientesOverlay" class="pendientes-overlay" aria-hidden="true">
+    <section class="pendientes-modal" role="dialog" aria-modal="true" aria-labelledby="pendientesTituloModal">
+      <button class="pendientes-cerrar" id="cerrarPendientes" aria-label="Cerrar">x</button>
+      <h2 id="pendientesTituloModal">Propuestas pendientes</h2>
+      <p id="pendientesSesion" class="pendientes-estado">Comprobando administrador...</p>
+      <div id="pendientesPanel" style="display:none">
+        <button id="recargarPendientes" class="pendiente-blue">Recargar pendientes</button>
+        <div id="pendientesLista"></div>
+      </div>
+      <p id="pendientesLog" class="pendientes-estado"></p>
+    </section>
+  </div>
+
   <script src="js/canciones.js"></script>
   <script src="js/app.js"></script>
   <script type="module" src="js/firebase.js"></script>
   <script type="module">
     import { getApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
     import { getAuth } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, getDocs, collection, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
     const app=getApp(), auth=getAuth(app), db=getFirestore(app);
     const $=id=>document.getElementById(id);
@@ -97,6 +118,35 @@
       catch(e){console.error('Propuesta:',e);$('propuestaResultado').innerHTML='<span class="propuesta-bad">✗ No se pudo guardar la propuesta.</span>';}
       finally{$('guardarPropuesta').disabled=false}
     };
+
+
+    // Panel integrado de propuestas pendientes
+    let perfilPendientes=null;
+    const pe=id=>document.getElementById(id);
+    function escPend(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+    function attrPend(v){return escPend(v).replace(/\"/g,'&quot;')}
+    async function cargarPendientes(){
+      if(!perfilPendientes)return;
+      pe('pendientesLog').textContent='Leyendo propuestas pendientes...';
+      try{
+        const snap=await getDocs(collection(db,'canciones'));
+        const rows=snap.docs.filter(x=>x.data().estado==='PENDIENTE');
+        pe('pendientesLista').innerHTML=rows.length?rows.map(x=>{const d=x.data(),id=x.id;return `<div class="pendiente-item"><b>${escPend(d.titulo||'Sin titulo')}</b><div class="pendiente-muted">${escPend(d.autor||'')} · ${escPend((d.momentos||[]).join(', '))}</div><p>Propuesto por: ${escPend(d.creadoPorNombre||d.creadoPorEmail||d.creadoPor||'')}</p><label>Titulo<input id="pt_${id}" value="${attrPend(d.titulo||'')}"></label><label>Autor<input id="pa_${id}" value="${attrPend(d.autor||'')}"></label><label>Letra<textarea id="pl_${id}">${escPend(d.letra||'')}</textarea></label><button class="pendiente-ok" onclick="aprobarPendiente('${id}')">Aprobar</button><button class="pendiente-bad" onclick="rechazarPendiente('${id}')">Rechazar</button></div>`}).join(''):'<p>No hay propuestas pendientes.</p>';
+        pe('pendientesLog').textContent=`Pendientes encontradas: ${rows.length}`;
+      }catch(e){console.error('Pendientes:',e);pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}
+    }
+    async function abrirPendientes(){
+      const u=auth.currentUser;perfilPendientes=null;pe('pendientesPanel').style.display='none';pe('pendientesLog').textContent='';
+      if(!u){pe('pendientesSesion').textContent='Inicia sesion como ADMINISTRADOR.';}
+      else try{const ss=await getDoc(doc(db,'usuarios',u.uid));if(!ss.exists())throw Error('Perfil no encontrado');const p=ss.data();if(p.activo!==true||p.rol!=='ADMINISTRADOR')throw Error('Esta pantalla requiere rol ADMINISTRADOR');perfilPendientes={uid:u.uid,nombre:p.nombre||'',email:u.email};pe('pendientesSesion').textContent=`${perfilPendientes.nombre||perfilPendientes.email} · ADMINISTRADOR`;pe('pendientesPanel').style.display='block';await cargarPendientes()}catch(e){pe('pendientesSesion').textContent=e.message}
+      pe('pendientesOverlay').classList.add('abierto');pe('pendientesOverlay').setAttribute('aria-hidden','false');
+    }
+    function cerrarPendientes(){pe('pendientesOverlay').classList.remove('abierto');pe('pendientesOverlay').setAttribute('aria-hidden','true')}
+    window.abrirPendientes=abrirPendientes;
+    document.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&/admin-pendientes\\.html(?:[?#].*)?$/.test(a.getAttribute('href')||'')){e.preventDefault();abrirPendientes()}});
+    pe('cerrarPendientes').onclick=cerrarPendientes;pe('recargarPendientes').onclick=cargarPendientes;pe('pendientesOverlay').addEventListener('click',e=>{if(e.target===pe('pendientesOverlay'))cerrarPendientes()});
+    window.aprobarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{titulo:pe('pt_'+id).value.trim(),autor:pe('pa_'+id).value.trim(),letra:pe('pl_'+id).value.trim(),estado:'PUBLICADA',activo:true,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta aprobada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
+    window.rechazarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{estado:'RECHAZADA',activo:false,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta rechazada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
   </script>
 </body>
 </html>
