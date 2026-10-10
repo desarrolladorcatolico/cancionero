@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Cancionero Litúrgico</title>
-  <link rel="stylesheet" href="css/estilos.css" />
-  css/modo-celebracion-v2.css
+  <link rel="stylesheet" href="css/modo-celebracion-v2.css" />
+  
   <link rel="icon" type="image/x-png" href="favicon-32x32.png" />
   <style>
     .propuesta-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;padding:18px;overflow:auto}
@@ -249,6 +249,6 @@
     window.toggleCatalogoAdmin=async(id,activoActual)=>{try{await updateDoc(doc(db,'canciones',id),{activo:!activoActual,actualizadoAt:serverTimestamp()});ca('catalogoAdminLog').textContent=activoActual?'Cancion desactivada.':'Cancion activada.';await abrirCatalogoAdmin();}catch(e){ca('catalogoAdminLog').textContent=(e.code||'ERROR')+': '+e.message}};
   </script>
   <!-- Prueba Modo Celebración V2 -->
-  js/modo-celebracion-v2.jsscript
+  <script src="js/modo-celebracion-v2.js"></script>
 </body>
 </html>
