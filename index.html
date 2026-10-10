@@ -98,7 +98,7 @@
   <script type="module">
     import { getApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
     import { getAuth } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, getDocs, collection, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, getDocs, collection, query, where, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
     const app=getApp(), auth=getAuth(app), db=getFirestore(app);
     const $=id=>document.getElementById(id);
@@ -193,8 +193,9 @@
         if(p.activo!==true||!['COLABORADOR','ADMINISTRADOR'].includes(p.rol))throw Error('Usuario sin permiso para consultar propuestas');
         mp('misPropuestasSesion').textContent=`${p.nombre||u.email} · ${p.rol}`;
         mp('misPropuestasLog').textContent='Leyendo tus propuestas...';
-        const snap=await getDocs(collection(db,'canciones'));
-        const rows=snap.docs.map(x=>x.data()).filter(d=>d.creadoPor===u.uid);
+        const qMis=query(collection(db,'canciones'),where('creadoPor','==',u.uid));
+        const snap=await getDocs(qMis);
+        const rows=snap.docs.map(x=>x.data());
         mp('misPropuestasLista').innerHTML=rows.length?rows.map(d=>`<div class="mispropuesta-item"><span class="estado-pill ${estadoClase(d.estado)}">${estadoTexto(d.estado)}</span><div><b>${escPend(d.titulo||'Sin titulo')}</b></div><div class="mispropuesta-meta">${escPend(d.autor||'')} ${d.momentos?.length?' · '+escPend(d.momentos.join(', ')):''}</div></div>`).join(''):'<p>Todavia no tienes propuestas.</p>';
         mp('misPropuestasLog').textContent=`Propuestas encontradas: ${rows.length}`;
       }catch(e){console.error('Mis propuestas:',e);mp('misPropuestasSesion').textContent=e.message;mp('misPropuestasLog').textContent=(e.code||'ERROR')+': '+e.message}
