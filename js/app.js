@@ -1,32 +1,318 @@
-const cancionesRespaldo=Array.isArray(canciones)?canciones.map(c=>({...c,id:String(c.id)})):[];
-let catalogoCanciones=cancionesRespaldo.slice();
-const ordenLiturgico=["Entrada","Perdon","Gloria","Antifona","Colecta","Ofertorio","Santo","Padre","Cordero","Comunion","ComunionII","Salida","Himno"];
-let listaActual=[],seleccion={},ordenCelebracion=[],indiceCelebracion=0,categoriaAbierta=null,modoSeleccion="personal",perfilSesion=null;
-function catalogo(){return catalogoCanciones}
-function idIgual(a,b){return String(a)===String(b)}
-function puedeEditarCompartida(){return!!perfilSesion&&perfilSesion.activo===true&&["ADMINISTRADOR","COLABORADOR"].includes(perfilSesion.rol)}
-function cargar(cat){if(categoriaAbierta===cat){categoriaAbierta=null;listaActual=[];document.getElementById("listaCanciones").innerHTML="";document.getElementById("buscador").value="";return}categoriaAbierta=cat;listaActual=catalogo().filter(c=>c.categoria===cat);document.getElementById("buscador").value="";mostrarCanciones(listaActual)}
-function mostrarCanciones(ds){const bloqueado=modoSeleccion==="compartida"&&!puedeEditarCompartida();document.getElementById("listaCanciones").innerHTML=ds.map(c=>`<div class="cancion" ${bloqueado?'style="opacity:.75"':`onclick="seleccionar('${String(c.id).replace(/'/g,"\\'")}','${String(c.categoria).replace(/'/g,"\\'")}')"`}>${idIgual(seleccion[c.categoria]?.id,c.id)?"✅ ":""}${c.titulo}</div>`).join("")}
-function seleccionar(id,cat){if(modoSeleccion==="compartida"&&!puedeEditarCompartida()){alert("La celebración compartida es de solo lectura.");return}const c=catalogo().find(x=>idIgual(x.id,id)&&x.categoria===cat);if(!c)return;seleccion[cat]=c;guardarSeleccion();actualizarSeleccion();mostrarCanciones(listaActual)}
-function quitarCancion(cat){if(modoSeleccion==="compartida"&&!puedeEditarCompartida())return;delete seleccion[cat];guardarSeleccion();actualizarSeleccion();mostrarCanciones(listaActual)}
-function actualizarSeleccion(){const bloqueado=modoSeleccion==="compartida"&&!puedeEditarCompartida();document.getElementById("listaSeleccion").innerHTML=ordenLiturgico.map(cat=>seleccion[cat]?`<div class="itemSeleccion completo"><b>✅ ${cat}</b><br>${seleccion[cat].titulo}${bloqueado?'':`<br><br><button onclick="quitarCancion('${cat}')">❌ Quitar</button>`}</div>`:`<div class="itemSeleccion incompleto"><b>⬜ ${cat}</b><br>Sin seleccionar</div>`).join("");actualizarPanelModo()}
-function guardarSeleccion(){if(modoSeleccion==="personal")localStorage.setItem("miCelebracion",JSON.stringify(seleccion));else if(puedeEditarCompartida())window.dispatchEvent(new CustomEvent("celebracion-compartida-cambiada",{detail:Object.fromEntries(Object.entries(seleccion).map(([cat,c])=>[cat,String(c.id)]))}))}
-function aplicarIds(ids){seleccion={};for(const[cat,id]of Object.entries(ids||{})){const c=catalogo().find(x=>idIgual(x.id,id)&&x.categoria===cat);if(c)seleccion[cat]=c}actualizarSeleccion();if(categoriaAbierta){listaActual=catalogo().filter(c=>c.categoria===categoriaAbierta);mostrarCanciones(listaActual)}}
-window.aplicarCelebracionCompartida=ids=>{localStorage.setItem("celebracionCompartidaIds",JSON.stringify(ids||{}));if(modoSeleccion==="compartida")aplicarIds(ids)};
+const cancionesRespaldo = Array.isArray(canciones)
+  ? canciones.map((c) => ({ ...c, id: String(c.id) }))
+  : [];
+let catalogoCanciones = cancionesRespaldo.slice();
+const ordenLiturgico = [
+  "Entrada",
+  "Perdon",
+  "Gloria",
+  "Antifona",
+  "Colecta",
+  "Ofertorio",
+  "Santo",
+  "Padre",
+  "Cordero",
+  "Comunion",
+  "ComunionII",
+  "Salida",
+  "Himno",
+];
+let listaActual = [],
+  seleccion = {},
+  ordenCelebracion = [],
+  indiceCelebracion = 0,
+  categoriaAbierta = null,
+  modoSeleccion = "personal",
+  perfilSesion = null;
+function catalogo() {
+  return catalogoCanciones;
+}
+function idIgual(a, b) {
+  return String(a) === String(b);
+}
+function puedeEditarCompartida() {
+  return (
+    !!perfilSesion &&
+    perfilSesion.activo === true &&
+    ["ADMINISTRADOR", "COLABORADOR"].includes(perfilSesion.rol)
+  );
+}
+function cargar(cat) {
+  if (categoriaAbierta === cat) {
+    categoriaAbierta = null;
+    listaActual = [];
+    document.getElementById("listaCanciones").innerHTML = "";
+    document.getElementById("buscador").value = "";
+    return;
+  }
+  categoriaAbierta = cat;
+  listaActual = catalogo().filter((c) => c.categoria === cat);
+  document.getElementById("buscador").value = "";
+  mostrarCanciones(listaActual);
+}
+function mostrarCanciones(ds) {
+  const bloqueado = modoSeleccion === "compartida" && !puedeEditarCompartida();
+  document.getElementById("listaCanciones").innerHTML = ds
+    .map(
+      (c) =>
+        `<div class="cancion" ${
+          bloqueado
+            ? 'style="opacity:.75"'
+            : `onclick="seleccionar('${String(c.id).replace(
+                /'/g,
+                "\\'"
+              )}','${String(c.categoria).replace(/'/g, "\\'")}')"`
+        }>${idIgual(seleccion[c.categoria]?.id, c.id) ? "✅ " : ""}${
+          c.titulo
+        }</div>`
+    )
+    .join("");
+}
+function seleccionar(id, cat) {
+  if (modoSeleccion === "compartida" && !puedeEditarCompartida()) {
+    alert("La celebración compartida es de solo lectura.");
+    return;
+  }
+  const c = catalogo().find((x) => idIgual(x.id, id) && x.categoria === cat);
+  if (!c) return;
+  seleccion[cat] = c;
+  guardarSeleccion();
+  actualizarSeleccion();
+  mostrarCanciones(listaActual);
+}
+function quitarCancion(cat) {
+  if (modoSeleccion === "compartida" && !puedeEditarCompartida()) return;
+  delete seleccion[cat];
+  guardarSeleccion();
+  actualizarSeleccion();
+  mostrarCanciones(listaActual);
+}
+function actualizarSeleccion() {
+  const bloqueado = modoSeleccion === "compartida" && !puedeEditarCompartida();
+  document.getElementById("listaSeleccion").innerHTML = ordenLiturgico
+    .map((cat) =>
+      seleccion[cat]
+        ? `<div class="itemSeleccion completo"><b>✅ ${cat}</b><br>${
+            seleccion[cat].titulo
+          }${
+            bloqueado
+              ? ""
+              : `<br><br><button onclick="quitarCancion('${cat}')">❌ Quitar</button>`
+          }</div>`
+        : `<div class="itemSeleccion incompleto"><b>⬜ ${cat}</b><br>Sin seleccionar</div>`
+    )
+    .join("");
+  actualizarPanelModo();
+}
+function guardarSeleccion() {
+  if (modoSeleccion === "personal")
+    localStorage.setItem("miCelebracion", JSON.stringify(seleccion));
+  else if (puedeEditarCompartida())
+    window.dispatchEvent(
+      new CustomEvent("celebracion-compartida-cambiada", {
+        detail: Object.fromEntries(
+          Object.entries(seleccion).map(([cat, c]) => [cat, String(c.id)])
+        ),
+      })
+    );
+}
+function aplicarIds(ids) {
+  seleccion = {};
+  for (const [cat, id] of Object.entries(ids || {})) {
+    const c = catalogo().find((x) => idIgual(x.id, id) && x.categoria === cat);
+    if (c) seleccion[cat] = c;
+  }
+  actualizarSeleccion();
+  if (categoriaAbierta) {
+    listaActual = catalogo().filter((c) => c.categoria === categoriaAbierta);
+    mostrarCanciones(listaActual);
+  }
+}
+window.aplicarCelebracionCompartida = (ids) => {
+  localStorage.setItem("celebracionCompartidaIds", JSON.stringify(ids || {}));
+  if (modoSeleccion === "compartida") aplicarIds(ids);
+};
 // Listener explicito para cambios remotos en tiempo real.
-window.addEventListener("celebracion-compartida-remota",e=>{const ids=e.detail||{};localStorage.setItem("celebracionCompartidaIds",JSON.stringify(ids));if(modoSeleccion==="compartida"){aplicarIds(ids);console.log("UI compartida actualizada en tiempo real")}});
-function cargarPersonal(){seleccion={};try{const d=JSON.parse(localStorage.getItem("miCelebracion")||"{}");for(const[cat,v]of Object.entries(d)){const id=typeof v==="object"?v.id:v,c=catalogo().find(x=>idIgual(x.id,id)&&x.categoria===cat);if(c)seleccion[cat]=c}}catch(e){}actualizarSeleccion()}
-function cambiarModoCelebracion(m){modoSeleccion=m;if(m==="personal")cargarPersonal();else{let ids={};try{ids=JSON.parse(localStorage.getItem("celebracionCompartidaIds")||"{}")}catch(e){}aplicarIds(ids)}mostrarCanciones(listaActual)}window.cambiarModoCelebracion=cambiarModoCelebracion;
-window.actualizarPerfilSesion=p=>{perfilSesion=p||null;actualizarPanelModo();actualizarSeleccion();mostrarCanciones(listaActual)};
-function nuevaCelebracion(){if(modoSeleccion==="compartida"&&!puedeEditarCompartida()){alert("Solo colaboradores y administradores pueden modificar la celebración compartida.");return}if(confirm("¿Borrar esta celebración?")){seleccion={};guardarSeleccion();actualizarSeleccion();mostrarCanciones(listaActual)}}
-function buscar(){const t=document.getElementById("buscador").value.trim().toLowerCase();listaActual=catalogo().filter(c=>[c.titulo,c.autor,c.categoria].some(v=>(v||"").toLowerCase().includes(t)));mostrarCanciones(listaActual)}
-function iniciarCelebracion(){ordenCelebracion=ordenLiturgico.filter(cat=>seleccion[cat]).map(cat=>seleccion[cat]);if(!ordenCelebracion.length){alert("Seleccione canciones");return}indiceCelebracion=0;mostrarCelebracion();document.getElementById("modoCelebracion").classList.remove("oculto");pantallaCompleta()}
-function mostrarCelebracion(){const c=ordenCelebracion[indiceCelebracion];if(!c){cerrarCelebracion();return}document.getElementById("tituloCelebracion").innerHTML=`${c.categoria} · ${c.titulo}<small>&nbsp; (${indiceCelebracion+1} de ${ordenCelebracion.length})</small>`;const el=document.getElementById("letraCelebracion");el.innerText=c.letra;el.scrollTo({top:0,behavior:"smooth"})}
-function siguiente(){if(indiceCelebracion<ordenCelebracion.length-1){indiceCelebracion++;mostrarCelebracion()}}
-function anterior(){if(indiceCelebracion>0){indiceCelebracion--;mostrarCelebracion()}}
-function cerrarCelebracion(){document.getElementById("modoCelebracion").classList.add("oculto");if(document.fullscreenElement)document.exitFullscreen()}
-function pantallaCompleta(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(console.log);else document.exitFullscreen()}
-function crearPanelModo(){if(document.getElementById("panelModoCancionero"))return;const h=document.querySelector("header")||document.body,p=document.createElement("div");p.id="panelModoCancionero";p.style.cssText="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 10px;background:#fff;color:#222;border-radius:8px;margin:4px;box-shadow:0 1px 5px #0002;font-size:13px";h.appendChild(p);actualizarPanelModo()}
-function actualizarPanelModo(){const p=document.getElementById("panelModoCancionero");if(!p)return;const u=perfilSesion?`${perfilSesion.nombre||perfilSesion.email} · ${perfilSesion.rol}`:"Visitante";p.innerHTML=`<button onclick="cambiarModoCelebracion('personal')" ${modoSeleccion==='personal'?'disabled':''}>👤 Mi celebración</button><button onclick="cambiarModoCelebracion('compartida')" ${modoSeleccion==='compartida'?'disabled':''}>👥 Compartida</button><span>${u}</span><button id="btnSesionCancionero">${perfilSesion?'Cerrar sesión':'Iniciar sesión'}</button>`;document.getElementById("btnSesionCancionero").onclick=()=>window.dispatchEvent(new CustomEvent(perfilSesion?"solicitar-logout":"solicitar-login"))}
-window.addEventListener("catalogo-cargado",e=>{const n=e.detail?.canciones;catalogoCanciones=Array.isArray(n)&&n.length?n.map(c=>({...c,id:String(c.id)})):cancionesRespaldo.slice();if(modoSeleccion==="personal")cargarPersonal();else{let ids={};try{ids=JSON.parse(localStorage.getItem("celebracionCompartidaIds")||"{}")}catch(e){}aplicarIds(ids)}console.log(`Catálogo cargado desde ${e.detail?.origen}: ${catalogoCanciones.length} entradas`)});
-document.addEventListener("DOMContentLoaded",()=>{crearPanelModo();cargarPersonal()});if(document.readyState!=="loading"){crearPanelModo();cargarPersonal()}
+window.addEventListener("celebracion-compartida-remota", (e) => {
+  const ids = e.detail || {};
+  localStorage.setItem("celebracionCompartidaIds", JSON.stringify(ids));
+  if (modoSeleccion === "compartida") {
+    aplicarIds(ids);
+    console.log("UI compartida actualizada en tiempo real");
+  }
+});
+function cargarPersonal() {
+  seleccion = {};
+  try {
+    const d = JSON.parse(localStorage.getItem("miCelebracion") || "{}");
+    for (const [cat, v] of Object.entries(d)) {
+      const id = typeof v === "object" ? v.id : v,
+        c = catalogo().find((x) => idIgual(x.id, id) && x.categoria === cat);
+      if (c) seleccion[cat] = c;
+    }
+  } catch (e) {}
+  actualizarSeleccion();
+}
+function cambiarModoCelebracion(m) {
+  modoSeleccion = m;
+  if (m === "personal") cargarPersonal();
+  else {
+    let ids = {};
+    try {
+      ids = JSON.parse(
+        localStorage.getItem("celebracionCompartidaIds") || "{}"
+      );
+    } catch (e) {}
+    aplicarIds(ids);
+  }
+  mostrarCanciones(listaActual);
+}
+window.cambiarModoCelebracion = cambiarModoCelebracion;
+window.actualizarPerfilSesion = (p) => {
+  perfilSesion = p || null;
+  actualizarPanelModo();
+  actualizarSeleccion();
+  mostrarCanciones(listaActual);
+};
+function nuevaCelebracion() {
+  if (modoSeleccion === "compartida" && !puedeEditarCompartida()) {
+    alert(
+      "Solo colaboradores y administradores pueden modificar la celebración compartida."
+    );
+    return;
+  }
+  if (confirm("¿Borrar esta celebración?")) {
+    seleccion = {};
+    guardarSeleccion();
+    actualizarSeleccion();
+    mostrarCanciones(listaActual);
+  }
+}
+function buscar() {
+  const t = document.getElementById("buscador").value.trim().toLowerCase();
+  listaActual = catalogo().filter((c) =>
+    [c.titulo, c.autor, c.categoria].some((v) =>
+      (v || "").toLowerCase().includes(t)
+    )
+  );
+  mostrarCanciones(listaActual);
+}
+function iniciarCelebracion() {
+  ordenCelebracion = ordenLiturgico
+    .filter((cat) => seleccion[cat])
+    .map((cat) => seleccion[cat]);
+  if (!ordenCelebracion.length) {
+    alert("Seleccione canciones");
+    return;
+  }
+  indiceCelebracion = 0;
+  mostrarCelebracion();
+  document.getElementById("modoCelebracion").classList.remove("oculto");
+  pantallaCompleta();
+}
+function mostrarCelebracion() {
+  const c = ordenCelebracion[indiceCelebracion];
+  if (!c) {
+    cerrarCelebracion();
+    return;
+  }
+  document.getElementById("tituloCelebracion").innerHTML = `${c.categoria} · ${
+    c.titulo
+  }<small>&nbsp; (${indiceCelebracion + 1} de ${
+    ordenCelebracion.length
+  })</small>`;
+  const el = document.getElementById("letraCelebracion");
+  el.innerText = c.letra;
+  el.scrollTo({ top: 0, behavior: "smooth" });
+}
+function siguiente() {
+  if (indiceCelebracion < ordenCelebracion.length - 1) {
+    indiceCelebracion++;
+    mostrarCelebracion();
+  }
+}
+function anterior() {
+  if (indiceCelebracion > 0) {
+    indiceCelebracion--;
+    mostrarCelebracion();
+  }
+}
+function cerrarCelebracion() {
+  document.getElementById("modoCelebracion").classList.add("oculto");
+  if (document.fullscreenElement) document.exitFullscreen();
+}
+function pantallaCompleta() {
+  if (!document.fullscreenElement)
+    document.documentElement.requestFullscreen().catch(console.log);
+  else document.exitFullscreen();
+}
+function crearPanelModo(){
+    if(document.getElementById("panelModoCancionero")) return;
+    const h=document.querySelector("header")||document.body;
+    const p=document.createElement("div");
+    p.id="panelModoCancionero";
+    p.style.cssText="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 10px;background:#fff;color:#222;border-radius:8px;margin:4px;box-shadow:0 1px 5px #0002;font-size:13px";
+    h.appendChild(p);
+    actualizarPanelModo();
+  }
+  
+  function actualizarPanelModo(){
+    const p=document.getElementById("panelModoCancionero");
+    if(!p) return;
+  
+    const rol=perfilSesion?.rol||"VISITANTE";
+    const usuario=perfilSesion ? `${perfilSesion.nombre||perfilSesion.email} · ${rol}` : "Visitante";
+  
+    let accionesRol="";
+    if(rol==="COLABORADOR"){
+      accionesRol=`
+        <a class="menuRolBtn" href="proponer-cancion.html">＋ Proponer canción</a>
+      `;
+    }
+    if(rol==="ADMINISTRADOR"){
+      accionesRol=`
+        <a class="menuRolBtn" href="proponer-cancion.html">＋ Agregar canción</a>
+        <a class="menuRolBtn" href="admin-pendientes.html">📋 Pendientes</a>
+      `;
+    }
+  
+    p.innerHTML=`
+      <button onclick="cambiarModoCelebracion('personal')" ${modoSeleccion==='personal'?'disabled':''}>👤 Mi celebración</button>
+      <button onclick="cambiarModoCelebracion('compartida')" ${modoSeleccion==='compartida'?'disabled':''}>👥 Compartida</button>
+      ${accionesRol}
+      <span class="usuarioRol">${usuario}</span>
+      <button id="btnSesionCancionero">${perfilSesion?'Cerrar sesión':'Iniciar sesión'}</button>
+    `;
+  
+    document.getElementById("btnSesionCancionero").onclick=()=>
+      window.dispatchEvent(new CustomEvent(perfilSesion?"solicitar-logout":"solicitar-login"));
+  }
+  
+window.addEventListener("catalogo-cargado", (e) => {
+  const n = e.detail?.canciones;
+  catalogoCanciones =
+    Array.isArray(n) && n.length
+      ? n.map((c) => ({ ...c, id: String(c.id) }))
+      : cancionesRespaldo.slice();
+  if (modoSeleccion === "personal") cargarPersonal();
+  else {
+    let ids = {};
+    try {
+      ids = JSON.parse(
+        localStorage.getItem("celebracionCompartidaIds") || "{}"
+      );
+    } catch (e) {}
+    aplicarIds(ids);
+  }
+  console.log(
+    `Catálogo cargado desde ${e.detail?.origen}: ${catalogoCanciones.length} entradas`
+  );
+});
+document.addEventListener("DOMContentLoaded", () => {
+  crearPanelModo();
+  cargarPersonal();
+});
+if (document.readyState !== "loading") {
+  crearPanelModo();
+  cargarPersonal();
+}

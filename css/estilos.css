@@ -239,3 +239,35 @@ button {
     padding: 10px 4px;
   }
 }
+
+/* Panel */
+#panelModoCancionero .menuRolBtn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #17324d;
+  background: #eaf3ff;
+  border: 1px solid #aacbed;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-weight: 600;
+}
+#panelModoCancionero .menuRolBtn:hover {
+  background: #dbeeff;
+}
+#panelModoCancionero .usuarioRol {
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  #panelModoCancionero {
+    width: 100%;
+    margin: 4px 0 !important;
+  }
+  #panelModoCancionero .menuRolBtn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+  #panelModoCancionero .usuarioRol {
+    flex-basis: 100%;
+  }
+}
