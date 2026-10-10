@@ -28,6 +28,8 @@
     .mispropuestas-overlay.abierto{display:block}.mispropuestas-modal{max-width:820px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}
     .mispropuestas-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}
     .mispropuesta-item{border:1px solid #e2e8f0;border-radius:10px;padding:15px;margin-top:12px}.mispropuesta-meta{color:#64748b;margin-top:5px}.estado-pill{display:inline-block;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px}.estado-pendiente{background:#fef3c7;color:#92400e}.estado-publicada{background:#dcfce7;color:#166534}.estado-rechazada{background:#fee2e2;color:#991b1b}.mispropuestas-estado{color:#64748b;font-size:14px}
+
+    .catalogo-admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10003;padding:18px;overflow:auto}.catalogo-admin-overlay.abierto{display:block}.catalogo-admin-modal{max-width:980px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}.catalogo-admin-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}.catalogo-admin-buscar{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px;box-sizing:border-box;margin:8px 0}.catalogo-admin-item{border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-top:10px}.catalogo-admin-meta{color:#64748b;font-size:14px;margin-top:4px}.catalogo-admin-acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.catalogo-admin-btn{padding:9px 12px;border:0;border-radius:7px;font-weight:700;cursor:pointer}.catalogo-admin-editar{background:#1565c0;color:#fff}.catalogo-admin-toggle{background:#e5e7eb;color:#1f2937}.catalogo-admin-form label{font-weight:700;display:block;margin-top:10px}.catalogo-admin-form input,.catalogo-admin-form textarea{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:7px;margin-top:5px;box-sizing:border-box}.catalogo-admin-form textarea{min-height:180px}.catalogo-admin-momentos{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:7px;margin-top:7px}.catalogo-admin-momento{font-weight:400!important;background:#f8fafc;padding:7px;border-radius:7px}.catalogo-admin-momento input{width:auto;margin-right:6px}.catalogo-admin-estado{color:#64748b;font-size:14px}
   </style>
 </head>
 <body>
@@ -89,6 +91,20 @@
       <p id="misPropuestasSesion" class="mispropuestas-estado"></p>
       <div id="misPropuestasLista"></div>
       <p id="misPropuestasLog" class="mispropuestas-estado"></p>
+    </section>
+  </div>
+
+
+  <div id="catalogoAdminOverlay" class="catalogo-admin-overlay" aria-hidden="true">
+    <section class="catalogo-admin-modal" role="dialog" aria-modal="true" aria-labelledby="catalogoAdminTitulo">
+      <button class="catalogo-admin-cerrar" id="cerrarCatalogoAdmin" aria-label="Cerrar">x</button>
+      <h2 id="catalogoAdminTitulo">Administrar catálogo</h2>
+      <p id="catalogoAdminSesion" class="catalogo-admin-estado"></p>
+      <div id="catalogoAdminPanel" style="display:none">
+        <input id="catalogoAdminBuscar" class="catalogo-admin-buscar" placeholder="Buscar canción por título o autor...">
+        <div id="catalogoAdminLista"></div>
+      </div>
+      <p id="catalogoAdminLog" class="catalogo-admin-estado"></p>
     </section>
   </div>
 
@@ -165,21 +181,25 @@
     window.rechazarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{estado:'RECHAZADA',activo:false,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta rechazada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
 
 
-    // Asegura que el acceso a Mis propuestas aparezca en el menu del colaborador/admin
-    function asegurarBotonMisPropuestas(){
+    // Ajusta accesos adicionales segun rol visible en el menu
+    function ajustarMenuIntegrado(){
+      const texto=document.body.innerText||'';
       const enlaceProponer=[...document.querySelectorAll('a')].find(a=>(a.getAttribute('href')||'').includes('proponer-cancion.html'));
-      if(!enlaceProponer || document.getElementById('btnMisPropuestas')) return;
-      const a=document.createElement('a');
-      a.id='btnMisPropuestas';
-      a.href='mis-propuestas.html';
-      a.textContent='Mis propuestas';
-      a.className=enlaceProponer.className;
-      a.style.cssText=enlaceProponer.style.cssText;
-      enlaceProponer.insertAdjacentElement('afterend',a);
+      const enlacePendientes=[...document.querySelectorAll('a')].find(a=>(a.getAttribute('href')||'').includes('admin-pendientes.html'));
+      const esAdmin=texto.includes('ADMINISTRADOR') && !!enlacePendientes;
+      const esColaborador=texto.includes('COLABORADOR') && !!enlaceProponer && !esAdmin;
+      let mis=document.getElementById('btnMisPropuestas');
+      if(esColaborador && enlaceProponer){
+        if(!mis){mis=document.createElement('a');mis.id='btnMisPropuestas';mis.href='mis-propuestas.html';mis.textContent='Mis propuestas';mis.className=enlaceProponer.className;mis.style.cssText=enlaceProponer.style.cssText;enlaceProponer.insertAdjacentElement('afterend',mis)}
+      } else if(mis){mis.remove()}
+      let adm=document.getElementById('btnAdministrarCatalogo');
+      if(esAdmin && enlacePendientes){
+        if(!adm){adm=document.createElement('a');adm.id='btnAdministrarCatalogo';adm.href='administrar-catalogo.html';adm.textContent='Administrar catálogo';adm.className=enlacePendientes.className;adm.style.cssText=enlacePendientes.style.cssText;enlacePendientes.insertAdjacentElement('afterend',adm)}
+      } else if(adm){adm.remove()}
     }
-    const obsMisPropuestas=new MutationObserver(asegurarBotonMisPropuestas);
-    obsMisPropuestas.observe(document.body,{childList:true,subtree:true});
-    asegurarBotonMisPropuestas();
+    const obsMenuIntegrado=new MutationObserver(ajustarMenuIntegrado);
+    obsMenuIntegrado.observe(document.body,{childList:true,subtree:true});
+    ajustarMenuIntegrado();
 
     // Panel integrado Mis propuestas
     const mp=id=>document.getElementById(id);
@@ -205,6 +225,27 @@
     window.abrirMisPropuestas=abrirMisPropuestas;
     document.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&(a.getAttribute('href')||'').includes('mis-propuestas.html')){e.preventDefault();e.stopPropagation();abrirMisPropuestas();}});
     mp('cerrarMisPropuestas').onclick=cerrarMisPropuestas;mp('misPropuestasOverlay').addEventListener('click',e=>{if(e.target===mp('misPropuestasOverlay'))cerrarMisPropuestas()});
+
+
+    // Panel Administrar catalogo, exclusivo para ADMINISTRADOR
+    const ca=id=>document.getElementById(id);let catalogoAdminRows=[];let perfilCatalogoAdmin=null;
+    function renderCatalogoAdmin(rows){
+      const q=(ca('catalogoAdminBuscar').value||'').trim().toLowerCase();
+      const filtradas=rows.filter(r=>!q||String(r.d.titulo||'').toLowerCase().includes(q)||String(r.d.autor||'').toLowerCase().includes(q));
+      ca('catalogoAdminLista').innerHTML=filtradas.length?filtradas.map(r=>{const d=r.d,id=r.id;return `<div class="catalogo-admin-item"><b>${escPend(d.titulo||'Sin titulo')}</b><div class="catalogo-admin-meta">${escPend(d.autor||'')} · ${escPend((d.momentos||[]).join(', '))} · ${d.activo===false?'INACTIVA':'ACTIVA'}</div><div class="catalogo-admin-acciones"><button class="catalogo-admin-btn catalogo-admin-editar" onclick="editarCatalogoAdmin('${id}')">Editar</button><button class="catalogo-admin-btn catalogo-admin-toggle" onclick="toggleCatalogoAdmin('${id}',${d.activo!==false})">${d.activo===false?'Activar':'Desactivar'}</button></div><div id="cef_${id}"></div></div>`}).join(''):'<p>No se encontraron canciones.</p>';
+    }
+    async function abrirCatalogoAdmin(){
+      const u=auth.currentUser;perfilCatalogoAdmin=null;ca('catalogoAdminPanel').style.display='none';ca('catalogoAdminLog').textContent='';
+      if(!u){ca('catalogoAdminSesion').textContent='Inicia sesion como ADMINISTRADOR.';}
+      else try{const ss=await getDoc(doc(db,'usuarios',u.uid));if(!ss.exists())throw Error('Perfil no encontrado');const p=ss.data();if(p.activo!==true||p.rol!=='ADMINISTRADOR')throw Error('Esta pantalla requiere rol ADMINISTRADOR');perfilCatalogoAdmin={uid:u.uid,nombre:p.nombre||'',email:u.email};ca('catalogoAdminSesion').textContent=`${perfilCatalogoAdmin.nombre||perfilCatalogoAdmin.email} · ADMINISTRADOR`;ca('catalogoAdminLog').textContent='Leyendo catalogo...';const snap=await getDocs(collection(db,'canciones'));catalogoAdminRows=snap.docs.filter(x=>x.data().estado==='PUBLICADA').map(x=>({id:x.id,d:x.data()}));ca('catalogoAdminPanel').style.display='block';renderCatalogoAdmin(catalogoAdminRows);ca('catalogoAdminLog').textContent=`Canciones publicadas encontradas: ${catalogoAdminRows.length}`;}catch(e){console.error('Administrar catalogo:',e);ca('catalogoAdminSesion').textContent=e.message;ca('catalogoAdminLog').textContent=(e.code||'ERROR')+': '+e.message}
+      ca('catalogoAdminOverlay').classList.add('abierto');ca('catalogoAdminOverlay').setAttribute('aria-hidden','false');
+    }
+    function cerrarCatalogoAdmin(){ca('catalogoAdminOverlay').classList.remove('abierto');ca('catalogoAdminOverlay').setAttribute('aria-hidden','true')}
+    window.abrirCatalogoAdmin=abrirCatalogoAdmin;ca('cerrarCatalogoAdmin').onclick=cerrarCatalogoAdmin;ca('catalogoAdminBuscar').oninput=()=>renderCatalogoAdmin(catalogoAdminRows);ca('catalogoAdminOverlay').addEventListener('click',e=>{if(e.target===ca('catalogoAdminOverlay'))cerrarCatalogoAdmin()});
+    document.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&(a.getAttribute('href')||'').includes('administrar-catalogo.html')){e.preventDefault();e.stopPropagation();abrirCatalogoAdmin();}});
+    window.editarCatalogoAdmin=id=>{const r=catalogoAdminRows.find(x=>x.id===id);if(!r)return;const d=r.d;const box=ca('cef_'+id);box.innerHTML=`<div class="catalogo-admin-form"><label>Titulo<input id="cet_${id}" value="${attrPend(d.titulo||'')}"></label><label>Autor<input id="cea_${id}" value="${attrPend(d.autor||'')}"></label><label>Momentos liturgicos</label><div class="catalogo-admin-momentos">${cats.map(c=>`<label class="catalogo-admin-momento"><input type="checkbox" value="${c}" ${(d.momentos||[]).includes(c)?'checked':''}>${c}</label>`).join('')}</div><label>Letra<textarea id="cel_${id}">${escPend(d.letra||'')}</textarea></label><label>Tono<input id="ceto_${id}" value="${attrPend(d.tono||'')}"></label><div class="catalogo-admin-acciones"><button class="catalogo-admin-btn catalogo-admin-editar" onclick="guardarCatalogoAdmin('${id}')">Guardar cambios</button><button class="catalogo-admin-btn catalogo-admin-toggle" onclick="document.getElementById('cef_${id}').innerHTML=''">Cancelar</button></div></div>`};
+    window.guardarCatalogoAdmin=async id=>{try{const momentos=[...ca('cef_'+id).querySelectorAll('.catalogo-admin-momento input:checked')].map(x=>x.value);if(!ca('cet_'+id).value.trim()||!ca('cel_'+id).value.trim()||!momentos.length){ca('catalogoAdminLog').textContent='Completa titulo, letra y al menos un momento liturgico.';return}await updateDoc(doc(db,'canciones',id),{titulo:ca('cet_'+id).value.trim(),autor:ca('cea_'+id).value.trim(),letra:ca('cel_'+id).value.trim(),tono:ca('ceto_'+id).value.trim(),momentos,actualizadoAt:serverTimestamp()});ca('catalogoAdminLog').textContent='Cancion actualizada.';await abrirCatalogoAdmin();}catch(e){ca('catalogoAdminLog').textContent=(e.code||'ERROR')+': '+e.message}};
+    window.toggleCatalogoAdmin=async(id,activoActual)=>{try{await updateDoc(doc(db,'canciones',id),{activo:!activoActual,actualizadoAt:serverTimestamp()});ca('catalogoAdminLog').textContent=activoActual?'Cancion desactivada.':'Cancion activada.';await abrirCatalogoAdmin();}catch(e){ca('catalogoAdminLog').textContent=(e.code||'ERROR')+': '+e.message}};
   </script>
 </body>
 </html>
