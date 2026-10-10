@@ -143,7 +143,7 @@
     }
     function cerrarPendientes(){pe('pendientesOverlay').classList.remove('abierto');pe('pendientesOverlay').setAttribute('aria-hidden','true')}
     window.abrirPendientes=abrirPendientes;
-    document.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&/admin-pendientes\\.html(?:[?#].*)?$/.test(a.getAttribute('href')||'')){e.preventDefault();abrirPendientes()}});
+    document.addEventListener('click',e=>{const a=e.target.closest('a');if(a && (a.getAttribute('href')||'').includes('admin-pendientes.html')){e.preventDefault();e.stopPropagation();abrirPendientes();}});
     pe('cerrarPendientes').onclick=cerrarPendientes;pe('recargarPendientes').onclick=cargarPendientes;pe('pendientesOverlay').addEventListener('click',e=>{if(e.target===pe('pendientesOverlay'))cerrarPendientes()});
     window.aprobarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{titulo:pe('pt_'+id).value.trim(),autor:pe('pa_'+id).value.trim(),letra:pe('pl_'+id).value.trim(),estado:'PUBLICADA',activo:true,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta aprobada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
     window.rechazarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{estado:'RECHAZADA',activo:false,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta rechazada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
