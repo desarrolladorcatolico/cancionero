@@ -1,73 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Cancionero Litúrgico</title>
-    <link rel="stylesheet" href="css/estilos.css" />
-    <link rel="icon" type="image/x-png" href="favicon-32x32.png" />
-  </head>
-  <body>
-    <header>
-      <h2>Cancionero</h2>
-      <span id="estadoNube" style="font-size: 12px">☁ Conectando...</span
-      ><button onclick="iniciarCelebracion()">▶ Iniciar</button
-      ><button onclick="nuevaCelebracion()">🗑 Nuevo</button>
-    </header>
-    <div class="contenedor">
-      <div class="panel panelMomentos">
-        <h3 class="tituloMomentos">Momentos Litúrgicos</h3>
-        <div class="scrollMomentos">
-          <div class="momento" onclick="cargar('Entrada')">Entrada</div>
-          <div class="momento" onclick="cargar('Perdon')">Perdón</div>
-          <div class="momento" onclick="cargar('Gloria')">Gloria</div>
-          <div class="momento" onclick="cargar('Antifona')">Antifona</div>
-          <div class="momento" onclick="cargar('Colecta')">Colecta</div>
-          <div class="momento" onclick="cargar('Ofertorio')">Ofertorio</div>
-          <div class="momento" onclick="cargar('Santo')">Santo</div>
-          <div class="momento" onclick="cargar('Padre')">Padrenuestro</div>
-          <div class="momento" onclick="cargar('Cordero')">Cordero</div>
-          <div class="momento" onclick="cargar('Comunion')">Comunión</div>
-          <div class="momento" onclick="cargar('ComunionII')">Comunión II</div>
-          <div class="momento" onclick="cargar('Salida')">Salida</div>
-          <div class="momento" onclick="cargar('Himno')">Himno</div>
-        </div>
-      </div>
-      <div class="panel">
-        <input
-          id="buscador"
-          placeholder="Buscar canción..."
-          onkeyup="buscar()"
-        />
-        <div id="listaCanciones"></div>
-      </div>
-      <div id="seleccion">
-        <h3>Celebración del Día</h3>
-        <div
-          style="
-            background: #fff3cd;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-          "
-        >
-          <b>⚠ Selección compartida:</b> los cambios se guardan para todos. Por
-          favor, no modificar si la celebración ya está preparada.
-        </div>
-        <div id="listaSeleccion"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cancionero Litúrgico</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+  <link rel="icon" type="image/x-png" href="favicon-32x32.png" />
+  <style>
+    .propuesta-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;padding:18px;overflow:auto}
+    .propuesta-overlay.abierto{display:block}.propuesta-modal{max-width:760px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}
+    .propuesta-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}
+    .propuesta-modal label{font-weight:700;display:block;margin-top:12px}.propuesta-modal input,.propuesta-modal textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px;margin-top:5px;box-sizing:border-box}
+    .propuesta-modal textarea{min-height:240px;resize:vertical}.propuesta-momentos{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-top:8px}
+    .propuesta-momento{padding:8px;background:#f8fafc;border-radius:7px;font-weight:400!important}.propuesta-momento input{width:auto;margin:0 6px 0 0}
+    .propuesta-acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.propuesta-acciones button{padding:11px 15px;border:0;border-radius:7px;font-weight:700;cursor:pointer}
+    .propuesta-primary{background:#1565c0;color:#fff}.propuesta-secondary{background:#e5e7eb;color:#1f2937}.propuesta-ok{color:#15803d}.propuesta-bad{color:#b91c1c}
+    .propuesta-ayuda{color:#475569;font-size:14px}.propuesta-resultado{min-height:22px}
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Cancionero</h2>
+    <span id="estadoNube" style="font-size:12px">☁ Conectando...</span>
+    <button onclick="iniciarCelebracion()">▶ Iniciar</button>
+    <button onclick="nuevaCelebracion()">🗑 Nuevo</button>
+  </header>
+  <div class="contenedor">
+    <div class="panel panelMomentos">
+      <h3 class="tituloMomentos">Momentos Litúrgicos</h3>
+      <div class="scrollMomentos">
+        <div class="momento" onclick="cargar('Entrada')">Entrada</div><div class="momento" onclick="cargar('Perdon')">Perdón</div><div class="momento" onclick="cargar('Gloria')">Gloria</div><div class="momento" onclick="cargar('Antifona')">Antifona</div><div class="momento" onclick="cargar('Colecta')">Colecta</div><div class="momento" onclick="cargar('Ofertorio')">Ofertorio</div><div class="momento" onclick="cargar('Santo')">Santo</div><div class="momento" onclick="cargar('Padre')">Padrenuestro</div><div class="momento" onclick="cargar('Cordero')">Cordero</div><div class="momento" onclick="cargar('Comunion')">Comunión</div><div class="momento" onclick="cargar('ComunionII')">Comunión II</div><div class="momento" onclick="cargar('Salida')">Salida</div><div class="momento" onclick="cargar('Himno')">Himno</div>
       </div>
     </div>
-    <div id="modoCelebracion" class="oculto">
-      <h1 id="tituloCelebracion"></h1>
-      <div id="letraCelebracion"></div>
-      <div class="navegacion">
-        <button onclick="anterior()">◀ Anterior</button
-        ><button onclick="cerrarCelebracion()">❌ Cerrar</button
-        ><button onclick="siguiente()">▶ Siguiente</button>
+    <div class="panel"><input id="buscador" placeholder="Buscar canción..." onkeyup="buscar()" /><div id="listaCanciones"></div></div>
+    <div id="seleccion"><h3>Celebración del Día</h3><div style="background:#fff3cd;padding:8px;margin-bottom:8px;border-radius:4px"><b>⚠ Selección compartida:</b> los cambios se guardan para todos. Por favor, no modificar si la celebración ya está preparada.</div><div id="listaSeleccion"></div></div>
+  </div>
+  <div id="modoCelebracion" class="oculto"><h1 id="tituloCelebracion"></h1><div id="letraCelebracion"></div><div class="navegacion"><button onclick="anterior()">◀ Anterior</button><button onclick="cerrarCelebracion()">❌ Cerrar</button><button onclick="siguiente()">▶ Siguiente</button></div></div>
+
+  <div id="propuestaOverlay" class="propuesta-overlay" aria-hidden="true">
+    <section class="propuesta-modal" role="dialog" aria-modal="true" aria-labelledby="propuestaTituloModal">
+      <button class="propuesta-cerrar" id="cerrarPropuesta" aria-label="Cerrar">×</button>
+      <h2 id="propuestaTituloModal">Proponer canción</h2>
+      <p class="propuesta-ayuda">La propuesta se guardará como <b>PENDIENTE</b> y no aparecerá en el catálogo público hasta que un administrador la apruebe.</p>
+      <p id="propuestaSesion" class="propuesta-ayuda"></p>
+      <div id="propuestaForm">
+        <label>Título *<input id="propuestaTitulo" /></label>
+        <label>Autor<input id="propuestaAutor" /></label>
+        <label>Momentos litúrgicos *</label><div class="propuesta-momentos" id="propuestaMomentos"></div>
+        <label>Letra *<textarea id="propuestaLetra"></textarea></label>
+        <label>Tono (opcional)<input id="propuestaTono" /></label>
+        <div class="propuesta-acciones"><button class="propuesta-primary" id="guardarPropuesta">Enviar propuesta</button><button class="propuesta-secondary" id="cancelarPropuesta">Cancelar</button></div>
+        <p id="propuestaResultado" class="propuesta-resultado"></p>
       </div>
-    </div>
-    <script src="js/canciones.js"></script>
-    <script src="js/app.js"></script>
-    <script type="module" src="js/firebase.js"></script>
-  </body>
+    </section>
+  </div>
+
+  <script src="js/canciones.js"></script>
+  <script src="js/app.js"></script>
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module">
+    import { getApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    const app=getApp(), auth=getAuth(app), db=getFirestore(app);
+    const $=id=>document.getElementById(id);
+    const cats=["Entrada","Perdon","Gloria","Antifona","Colecta","Ofertorio","Santo","Padre","Cordero","Comunion","ComunionII","Salida","Himno"];
+    let perfilPropuesta=null;
+    $('propuestaMomentos').innerHTML=cats.map(c=>`<label class="propuesta-momento"><input type="checkbox" value="${c}">${c}</label>`).join('');
+
+    function limpiarPropuesta(){['propuestaTitulo','propuestaAutor','propuestaLetra','propuestaTono'].forEach(id=>$(id).value='');document.querySelectorAll('#propuestaMomentos input').forEach(x=>x.checked=false);$('propuestaResultado').textContent=''}
+    function cerrar(){ $('propuestaOverlay').classList.remove('abierto'); $('propuestaOverlay').setAttribute('aria-hidden','true'); }
+    async function abrir(){
+      const u=auth.currentUser; perfilPropuesta=null; $('propuestaResultado').textContent='';
+      if(!u){ $('propuestaSesion').innerHTML='<span class="propuesta-bad">Necesitas iniciar sesión como COLABORADOR o ADMINISTRADOR.</span>'; $('propuestaForm').style.display='none'; }
+      else try{
+        const s=await getDoc(doc(db,'usuarios',u.uid)); if(!s.exists()) throw Error('Perfil no encontrado'); const p=s.data();
+        if(p.activo!==true || !['COLABORADOR','ADMINISTRADOR'].includes(p.rol)) throw Error('Usuario sin permiso para proponer');
+        perfilPropuesta={uid:u.uid,email:u.email,nombre:p.nombre||'',rol:p.rol}; $('propuestaSesion').innerHTML=`✓ ${perfilPropuesta.nombre||perfilPropuesta.email} · <b>${perfilPropuesta.rol}</b>`; $('propuestaForm').style.display='block';
+      }catch(e){ $('propuestaSesion').innerHTML=`<span class="propuesta-bad">${e.message}</span>`; $('propuestaForm').style.display='none'; }
+      $('propuestaOverlay').classList.add('abierto'); $('propuestaOverlay').setAttribute('aria-hidden','false');
+    }
+    window.abrirProponerCancion=abrir;
+    document.addEventListener('click',e=>{ const a=e.target.closest('a'); if(a && /proponer-cancion\.html(?:[?#].*)?$/.test(a.getAttribute('href')||'')){ e.preventDefault(); abrir(); }});
+    $('cerrarPropuesta').onclick=cerrar; $('cancelarPropuesta').onclick=cerrar;
+    $('propuestaOverlay').addEventListener('click',e=>{if(e.target===$('propuestaOverlay'))cerrar()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrar()});
+    $('guardarPropuesta').onclick=async()=>{
+      if(!perfilPropuesta)return;
+      const titulo=$('propuestaTitulo').value.trim(), autor=$('propuestaAutor').value.trim(), letra=$('propuestaLetra').value.trim(), tono=$('propuestaTono').value.trim();
+      const momentos=[...document.querySelectorAll('#propuestaMomentos input:checked')].map(x=>x.value);
+      if(!titulo || !letra || !momentos.length){$('propuestaResultado').innerHTML='<span class="propuesta-bad">Completa título, letra y al menos un momento litúrgico.</span>';return}
+      const id=crypto.randomUUID(); const data={id,titulo,autor,momentos,letra,tono,acordes:'',estado:'PENDIENTE',activo:true,creadoPor:perfilPropuesta.uid,creadoPorNombre:perfilPropuesta.nombre||'',creadoPorEmail:perfilPropuesta.email||'',creadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()};
+      $('guardarPropuesta').disabled=true; $('propuestaResultado').textContent='Guardando propuesta…';
+      try{await setDoc(doc(db,'canciones',id),data);$('propuestaResultado').innerHTML='<span class="propuesta-ok">✓ Propuesta enviada. Quedó PENDIENTE de revisión.</span>';limpiarPropuesta();}
+      catch(e){console.error('Propuesta:',e);$('propuestaResultado').innerHTML='<span class="propuesta-bad">✗ No se pudo guardar la propuesta.</span>';}
+      finally{$('guardarPropuesta').disabled=false}
+    };
+  </script>
+</body>
 </html>
