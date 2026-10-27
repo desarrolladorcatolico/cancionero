@@ -866,7 +866,446 @@ Amén,  a  a  a   a  mén.`,
   Cordero de Dios, que quitas el pecado del mundo,
   danos la paz, danos la paz.` },
 
-  { id: 39, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 39, titulo: "Tu eres la luz", autor: "N-N", categoria: "Entrada", letra: `Tú  eres  la  luz 
+  Que brillo en las tinieblas 
+  Abrió mis ojos pude ver 
+  Mi corazón adora tu hermosura 
+  Esperanza de mi vida eres tú 
+  
+  Vine adorarte 
+  Vine a postrarme 
+  Vine a decir que eres mi Dios 
+  
+  Solo tú eres grande 
+  Solo tu eres digno 
+  eres asombroso para mi 
+  
+  Tu eres el rey 
+  Grandemente exaltado 
+  Glorioso por siempre Señor 
+  
+  Al mundo que creaste humilde viviste 
+  pobre te hiciste por Amor.
+  ` },
 
-  { id: 40, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 40, titulo: "Él está aquí", autor: "N-N", categoria: "Perdon", letra: `Él está aquí (x4) 
+
+  Miralo, adoralo,
+
+  Él está aquí (x2)
+  ` },
+
+  { id: 41, titulo: "Estíritu ven a habitar", autor: "N-N", categoria: "Gloria", letra: `Espíritu ven a habitar,
+posa y descansa en mí.
+Mira mi ser, esto es lo que soy,
+prepara mi corazón. (X2)
+
+Espíritu, Santo Espíritu. (X2)
+Espíritu ya estás aquí,
+envuelve este lugar.
+Toda mi fe, la pongo en Ti
+y haz lo que quieras en mí.
+Toda mi fe, la pongo en Ti
+y haz lo que quieras en mí.
+
+Espíritu, Santo Espíritu. (X2)
+` },
+  { id: 42, titulo: "Maranatha (Ven Espíritu de Dios)", autor: "N-N", categoria: "Antifona", letra: `Ven, Espíritu de Dios, 
+  inúndame de amor, 
+  ayúdame a seguir. 
+  Ven y dame tu calor, 
+  quema mi corazón, 
+  enséñame a seguir.
+  
+  Ven, Espíritu de Dios,
+  ven a mi ser, ven a mi vida.
+  Ven, Espíritu de Amor,
+  ven a morar, Maranathá!
+  
+  Hoy la vida que me das, 
+  te invoca en mi dolor, 
+  y clama, Ven Señor.
+  Ven y cambia mi existir, 
+  transforma mi penar
+  en glorias hacia Ti.` },
+  { id: 43, titulo: " Una Vez más rezaré", autor: "N-N", categoria: "Colecta", letra: `Una vez más rezaré,
+  de rodillas me pondré
+  puede ser que una vez más
+  El me perdone.
+  
+  Le diré que soy humano
+  que pequé, que lucho en vano,
+  puede ser que una vez más
+  El me perdone.
+  
+  Para un Dios que conoció la tentación
+  del amigo la traición
+  yo no dudo me perdone Dios mi amigo.
+  
+  Yo vi sufrir a mi hermano
+  y no le tendí la mano,
+  puede ser que una vez más 
+  El me perdone.
+  
+  Lo vi solo y desahuciado 
+  y yo de brazos cruzados
+  puede ser que una vez más 
+  El me perdone.` },
+  { id: 44, titulo: "Vida en Abundancia", autor: "N-N", categoria: "Ofertorio", letra: `Los lirios del campo
+  Y las aves del cielo
+  No se preocupan
+  Porque están en mis manos
+
+  Tené confianza en mí
+  Acá estoy junto a vos
+
+  Amá lo que sos y tus circunstancias
+  Estoy con vos, con tu cruz en mi espalda
+  Todo terminará bien
+  Yo hago nuevas todas las cosas.
+
+  Yo vengo a traerte vida
+  Vida en abundancia, en abundancia
+  Yo soy el camino, la verdad y la vida
+  Vida en abundancia, en abundancia.
+
+  No hice al hombre para que esté solo
+  Caminen juntos, como hermanos
+  Sopórtense mutuamente
+  Ámense unos a otros.
+
+  La felicidad de la vida eterna
+  Empieza conmigo en la tierra
+  Sentite vivo
+  La fiesta del reino comienza acá.
+
+  Yo vengo a traerte vida
+  Vida en abundancia, en abundancia
+  Yo soy el camino, la verdad y la vida
+  Vida en abundancia, en abundancia
+  Yo vengo a traerte vida
+  Vida en abundancia, en abundancia.` },
+  { id: 45, titulo: "Nada te turbe", autor: "N-N", categoria: "Santo", letra: `Nada te turbe, que nada te espante. 
+  Que todo se pasa, que el odio no queda.
+  Y la paciencia, que todo lo alcanza.
+  Y quien a Dios tiene ya nada le falta.
+  
+  Sólo Dios alcanza, sí, sólo Dios, (sólo Dios).
+  Estamos hechos para Dios, para Dios, (para Dios). 
+  Sólo Dios llena el vacío interior, (Interior).
+  Estamos hechos para Dios, para Dios, para Dios.` },
+  { id: 46, titulo: "Si conocieras ", autor: "N-N", categoria: "Padre", letra: `Si conocieras como te amo, 
+  si conocieras como te amo 
+  dejarías de vivir sin amor. 
+  Si conocieras como te amo, 
+  si conocieras como te amo 
+  dejarías de mendigar cualquier amor. 
+  Si conocieras como te amo, como te amo, 
+  serías más feliz. 
+  
+  Si conocieras como te busco, 
+  si conocieras como te busco 
+  dejarías que te alcanzara mi voz. 
+  Si conocieras como te busco, 
+  si conocieras como te busco 
+  dejarías que te hablara al corazón. 
+  Si conocieras como te busco, como te busco, 
+  escucharías más mi voz 
+  
+  Si conocieras como te sueño, 
+  si conocieras como te sueño 
+  me preguntarías lo que espero de ti. 
+  Si conocieras como te sueño, 
+  si conocieras como te sueño 
+  buscarías lo que he pensado para ti. 
+  Si conocieras como te sueño, como te sueño, 
+  pensarías más en mí.` },
+  { id: 47, titulo: "Misioneros del 2000 (Envíanos Señor)", autor: "N-N", categoria: "Cordero", letra: `Oh Jesús, mi gran Señor, mi amigo fiel,
+  tu misión es grande y grande es tu perdón,
+  la esperanza de encontrar la salvación
+  es difícil si tu amor no está.
+  
+  Con tu Espíritu me fortaleceré,
+  correré tus riesgos con mucho valor,
+  hablaré de ti con toda mi pasión,
+  día a día viviré por ti.
+  
+  Danos el amor apasionado de Pedro,
+  la audacia evangélica de Pablo,
+  y la fiel intimidad del apóstol Juan,
+  la sencilla pobreza de Francisco,
+  la alegría redentora de Pedro Nolasco,
+  la entrega generosa de Laura Vicuña,
+  el silencio misionero
+  de Teresa de Los Andes.
+  
+  ¡Envíanos, Señor, Jesús!
+  
+  De la mano y para no quedarme atrás
+  de María nuestra Madre seguiré
+  y como ella la confianza en ti pondré,
+  ya no habrán más días de soledad.
+  
+  Misioneros para el mundo del 2000
+  necesitas y yo quiero estar ahí,
+  a tu lado y caminando junto a ti,
+  misioneros del 2000.` },
+  { id: 48, titulo: "Huracán", autor: "N-N", categoria: "Comunion", letra: `Me he hecho tantas preguntas
+  Intentando entender
+  Me he lanzado a buscarte
+  Sin saberte ver
+
+  Me he asomado al abismo
+  Me he atrevido a saltar y caer
+  Y un huracán
+  Romperá el cielo desde mi garganta
+  Gritándote
+  ¿Dónde estás cuando me haces falta?
+
+  Y me han dado respuestas
+  Pero no sé qué hacer
+  He prometido seguirte
+  Sin entender
+  
+  Y hay un eco en lo hondo
+  Que me empuja hacia ti
+  Y aunque sea sin sentirte
+  Te buscaré
+
+  Y un huracán
+  Romperá el cielo desde mi garganta
+  Gritándote
+  ¿Dónde estás cuando me haces falta?
+
+  Y un huracán
+  Romperá el cielo desde mi garganta
+  Gritándote
+  ¿Dónde estás cuando me haces falta?
+
+  Estoy aquí en el silencio
+  Estoy aquí en este viento
+  Estoy aquí, soy este trozo de pan
+  Estoy aquí en tu lamento
+  Estoy aquí en este eco
+  Estoy aquí, soy este trozo de pan
+
+  Y un huracán
+  Romperá el cielo desde mi garganta
+  Gritándote
+  ¿Dónde estás cuando me haces falta?
+
+  Y un huracán
+  Romperá el cielo desde mi garganta
+  Gritándote
+  ¿Dónde estás cuando me haces falta?
+
+  Estoy aquí (y un huracán)
+  Estoy aquí (romperá el cielo desde mi garganta)
+  Estoy aquí (gritándote)
+  Soy este trozo de pan (¿dónde estás cuando me haces falta?)
+  Estoy aquí (y un huracán)
+  Estoy aquí (romperá el cielo desde mi garganta)
+  Estoy aquí (gritándote)
+  Soy este trozo de pan (¿dónde estás cuando me haces falta?)
+  
+  Y tu huracán
+  Romperá
+  El cielo desde mi garganta
+  Gritándome
+  Cuánto me haces falta` },
+  { id: 49, titulo: "Te quiero alabar", autor: "N-N", categoria: "ComunionII", letra: `Te quiero alabar, te quiero bendecir (x2)
+  ​Así, en paz; así, en paz, te quiero alabar (x2)
+  ​pues mi espíritu confirma que tu
+  ​eres un Dios de quietud
+  ​pues mi espíritu confirma que tu
+  ​eres un Dios de paz
+   
+  ​No quiero caminar si no vas junto a mi   (2x)
+  ​No quiero continuar si no estas junto a mi   (2x)
+  ​pues sin ti estoy seguro que yo
+  ​no podría seguir
+  ​pues sin ti estoy seguro que yo
+  ​no podría seguir` },
+  { id: 50, titulo: " Cara a cara", autor: "N-N", categoria: "Salida", letra: `Solamente una palabra
+  Solamente una oración
+  Cuando llegue a tu presencia, oh Señor.
+
+  No me importa en qué lugar
+  De la mesa me hagas sentar
+  O el color de mi corona
+  Si la llego a ganar.
+
+  Solamente una palabra
+  Si es que aún me queda voz
+  Y si logro articularla
+  Tú presencia
+  No te quiero hacer preguntas
+  Solo una petición
+  Y si puede ser a solas, mucho mejor.
+
+  Solo déjame mirarte cara a cara
+  Y perderme como un niño en tu mirada
+  Y que pase mucho tiempo
+  Y que nadie diga nada
+  Porque estoy viendo al maestro
+  Cara a cara
+
+  Que se ahogue mi recuerdo en tu mirada
+  Quiero amarte en el silencio y sin palabras
+  Y que pase mucho tiempo
+  Y que nadie diga nada
+  Solo déjame mirarte
+  Cara a cara
+
+  Solamente una palabra
+  Solamente una oración
+  Cuando llegue a tu presencia, oh Señor
+  No me importa en qué lugar
+  De la mesa me hagas sentar
+  O el color de mi corona
+  Si la llego a ganar
+
+  Solo déjame mirarte cara a cara
+  Aunque caiga derretido en tu mirada
+  Derrotado y desde el suelo
+  Temoroso y sin aliento
+  Aún te seguiré mirando
+  Mi maestro
+
+  Cuando caiga ante tus plantas, de rodillas
+  Déjame llorar pegado a tus heridas
+  Y que pase mucho tiempo
+  Y que nadie me lo impida
+  Que he esperado este momento
+  Toda mi vida` },
+  { id: 51, titulo: "Eso que soy, eso te doy", autor: "N-N", categoria: "Himno", letra: `A veces te pregunto ¿por qué yo?
+  Y solo me respondes: "porque quiero"
+  Es un misterio grande que nos llames
+  Así tal como somos a tu encuentro
+  Entonces redescubro una verdad
+  Mi vida, nuestra vida es tu tesoro
+  Se trata entonces solo de ofrecerte
+  Con todo nuestro amor esto que somos
+
+  ¿Qué te daré? ¿Qué te daremos?
+  Si todo, todo es tu regalo
+  Te ofreceré, te ofreceremos
+  Esto que somos, esto que soy
+  Eso te doy
+
+  Esto que soy, esto es lo que te doy
+  Esto que somos es lo que te damos
+  Tú no desprecias nuestra vida humilde
+  Se trata de poner todo en tus manos
+  Aquí van mis trabajos y mi fe
+  Mis mates, mis bajones y mis sueños
+  Y todas las personas que me diste
+  Desde mi corazón te las ofrezco
+
+  ¿Qué te daré? ¿Qué te daremos?
+  Si todo, todo es tu regalo
+  Te ofreceré, te ofreceremos
+  Esto que somos, esto que soy
+  Eso te doy
+
+  Vi tanta gente en lo alto del sur
+  Me conmovió el latir de tantas vidas
+  Y adiviné tu abrazo gigantesco
+  Y sé que sus historias recibirás
+  Por eso tu altar luce vino y pan
+  Son signo y homenaje de la vida
+  Misterio de ofrecerte y recibirnos
+  Humanidad que Cristo diviniza
+
+  ¿Qué te daré? ¿Qué te daremos?
+  Si todo, todo es tu regalo
+  Te ofreceré, te ofreceremos
+  Esto que somos, esto que soy
+  Eso te doy` },
+  { id: 52, titulo: "Que bien se está aquí", autor: "N-N", categoria: "Evento", letra: `Que bien se está aquí, en tu presencia
+  Glorioso por siempre Señor
+  Que bien se está aquí, a tu lado
+  Sintiendo tu paz y tu amor
+
+  Cuán hermoso eres Señor
+  Tú no tienes comparación
+  Quiero permanecer por siempre en tu amor
+
+  Qué bien se está aquí en tu presencia
+  Glorioso por siempre, Señor
+  Qué bien se está aquí a tu lado
+  Sintiendo tu paz y tu amor
+
+  Cuán hermoso eres, Señor
+  Tú no tienes comparación
+  Quiero permanecer por siempre en tu amor
+
+  Cuán hermoso eres, Señor
+  Tú no tienes comparación
+  Quiero permanecer por siempre en tu amor
+
+  Con todo, mi corazón
+  Te adoro, Señor
+  Con todo, mi corazón
+  Te adoro, Señor
+  Con todo, mi corazón
+  Te adoro, Señor
+  Con todo, mi corazón
+  Te adoro, Señor
+
+  Cuán hermoso eres, Señor
+  Tú no tienes comparación
+  Quiero permanecer por siempre en tu amor
+
+  Con todo, mi corazón
+  Te alabo, Señor
+  Con todo, mi corazón
+  Te alabo, Señor
+
+  Cuán hermoso eres, Señor
+  Tú no tienes comparación
+  Quiero permanecer por siempre en tu amor
+
+  Que bien se está aquí, en tu presencia.` },
+  { id: 53, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 54, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 55, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 56, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 57, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 58, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 59, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 60, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 61, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 62, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 63, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 64, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 65, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 66, titulo: "", autor: "N-N", categoria: "", letra: `` },
+  { id: 67, titulo: "", autor: "N-N", categoria: "", letra: `` },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ];

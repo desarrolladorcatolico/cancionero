@@ -16,6 +16,7 @@ const ordenLiturgico = [
   "ComunionII",
   "Salida",
   "Himno",
+  "Evento",
 ];
 let listaActual = [],
   seleccion = {},

@@ -1,251 +1,1177 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cancionero Litúrgico</title>
-  <link rel="stylesheet" href="css/estilos.css" />
-  <link rel="icon" type="image/x-png" href="favicon-32x32.png" />
-  <style>
-    .propuesta-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;padding:18px;overflow:auto}
-    .propuesta-overlay.abierto{display:block}.propuesta-modal{max-width:760px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}
-    .propuesta-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}
-    .propuesta-modal label{font-weight:700;display:block;margin-top:12px}.propuesta-modal input,.propuesta-modal textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px;margin-top:5px;box-sizing:border-box}
-    .propuesta-modal textarea{min-height:240px;resize:vertical}.propuesta-momentos{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-top:8px}
-    .propuesta-momento{padding:8px;background:#f8fafc;border-radius:7px;font-weight:400!important}.propuesta-momento input{width:auto;margin:0 6px 0 0}
-    .propuesta-acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.propuesta-acciones button{padding:11px 15px;border:0;border-radius:7px;font-weight:700;cursor:pointer}
-    .propuesta-primary{background:#1565c0;color:#fff}.propuesta-secondary{background:#e5e7eb;color:#1f2937}.propuesta-ok{color:#15803d}.propuesta-bad{color:#b91c1c}
-    .propuesta-ayuda{color:#475569;font-size:14px}.propuesta-resultado{min-height:22px}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cancionero Litúrgico</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="icon" type="image/x-png" href="favicon-32x32.png" />
+    <style>
+      .propuesta-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 10000;
+        padding: 18px;
+        overflow: auto;
+      }
+      .propuesta-overlay.abierto {
+        display: block;
+      }
+      .propuesta-modal {
+        max-width: 760px;
+        margin: 20px auto;
+        background: #fff;
+        color: #1f2937;
+        border-radius: 14px;
+        box-shadow: 0 10px 35px #0005;
+        padding: 20px;
+        position: relative;
+      }
+      .propuesta-cerrar {
+        position: absolute;
+        right: 14px;
+        top: 10px;
+        border: 0;
+        background: transparent;
+        font-size: 28px;
+        cursor: pointer;
+        color: #475569;
+      }
+      .propuesta-modal label {
+        font-weight: 700;
+        display: block;
+        margin-top: 12px;
+      }
+      .propuesta-modal input,
+      .propuesta-modal textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        margin-top: 5px;
+        box-sizing: border-box;
+      }
+      .propuesta-modal textarea {
+        min-height: 240px;
+        resize: vertical;
+      }
+      .propuesta-momentos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .propuesta-momento {
+        padding: 8px;
+        background: #f8fafc;
+        border-radius: 7px;
+        font-weight: 400 !important;
+      }
+      .propuesta-momento input {
+        width: auto;
+        margin: 0 6px 0 0;
+      }
+      .propuesta-acciones {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .propuesta-acciones button {
+        padding: 11px 15px;
+        border: 0;
+        border-radius: 7px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .propuesta-primary {
+        background: #1565c0;
+        color: #fff;
+      }
+      .propuesta-secondary {
+        background: #e5e7eb;
+        color: #1f2937;
+      }
+      .propuesta-ok {
+        color: #15803d;
+      }
+      .propuesta-bad {
+        color: #b91c1c;
+      }
+      .propuesta-ayuda {
+        color: #475569;
+        font-size: 14px;
+      }
+      .propuesta-resultado {
+        min-height: 22px;
+      }
 
-    .pendientes-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10001;padding:18px;overflow:auto}
-    .pendientes-overlay.abierto{display:block}.pendientes-modal{max-width:900px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}
-    .pendientes-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}
-    .pendiente-item{border:1px solid #e2e8f0;border-radius:10px;padding:15px;margin-top:12px}.pendiente-muted{color:#64748b}.pendientes-estado{color:#64748b;font-size:14px}
-    .pendientes-modal label{font-weight:700;display:block;margin-top:10px}.pendientes-modal input,.pendientes-modal textarea{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:7px;margin:5px 0;box-sizing:border-box}.pendientes-modal textarea{min-height:180px}
-    .pendiente-ok,.pendiente-bad,.pendiente-blue{padding:10px 13px;border:0;border-radius:7px;font-weight:700;margin:6px 5px 0 0;cursor:pointer}.pendiente-ok{background:#15803d;color:#fff}.pendiente-bad{background:#b91c1c;color:#fff}.pendiente-blue{background:#1565c0;color:#fff}
+      .pendientes-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 10001;
+        padding: 18px;
+        overflow: auto;
+      }
+      .pendientes-overlay.abierto {
+        display: block;
+      }
+      .pendientes-modal {
+        max-width: 900px;
+        margin: 20px auto;
+        background: #fff;
+        color: #1f2937;
+        border-radius: 14px;
+        box-shadow: 0 10px 35px #0005;
+        padding: 20px;
+        position: relative;
+      }
+      .pendientes-cerrar {
+        position: absolute;
+        right: 14px;
+        top: 10px;
+        border: 0;
+        background: transparent;
+        font-size: 28px;
+        cursor: pointer;
+        color: #475569;
+      }
+      .pendiente-item {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 12px;
+      }
+      .pendiente-muted {
+        color: #64748b;
+      }
+      .pendientes-estado {
+        color: #64748b;
+        font-size: 14px;
+      }
+      .pendientes-modal label {
+        font-weight: 700;
+        display: block;
+        margin-top: 10px;
+      }
+      .pendientes-modal input,
+      .pendientes-modal textarea {
+        width: 100%;
+        padding: 9px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        margin: 5px 0;
+        box-sizing: border-box;
+      }
+      .pendientes-modal textarea {
+        min-height: 180px;
+      }
+      .pendiente-ok,
+      .pendiente-bad,
+      .pendiente-blue {
+        padding: 10px 13px;
+        border: 0;
+        border-radius: 7px;
+        font-weight: 700;
+        margin: 6px 5px 0 0;
+        cursor: pointer;
+      }
+      .pendiente-ok {
+        background: #15803d;
+        color: #fff;
+      }
+      .pendiente-bad {
+        background: #b91c1c;
+        color: #fff;
+      }
+      .pendiente-blue {
+        background: #1565c0;
+        color: #fff;
+      }
 
-    .mispropuestas-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10002;padding:18px;overflow:auto}
-    .mispropuestas-overlay.abierto{display:block}.mispropuestas-modal{max-width:820px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}
-    .mispropuestas-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}
-    .mispropuesta-item{border:1px solid #e2e8f0;border-radius:10px;padding:15px;margin-top:12px}.mispropuesta-meta{color:#64748b;margin-top:5px}.estado-pill{display:inline-block;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px}.estado-pendiente{background:#fef3c7;color:#92400e}.estado-publicada{background:#dcfce7;color:#166534}.estado-rechazada{background:#fee2e2;color:#991b1b}.mispropuestas-estado{color:#64748b;font-size:14px}
+      .mispropuestas-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 10002;
+        padding: 18px;
+        overflow: auto;
+      }
+      .mispropuestas-overlay.abierto {
+        display: block;
+      }
+      .mispropuestas-modal {
+        max-width: 820px;
+        margin: 20px auto;
+        background: #fff;
+        color: #1f2937;
+        border-radius: 14px;
+        box-shadow: 0 10px 35px #0005;
+        padding: 20px;
+        position: relative;
+      }
+      .mispropuestas-cerrar {
+        position: absolute;
+        right: 14px;
+        top: 10px;
+        border: 0;
+        background: transparent;
+        font-size: 28px;
+        cursor: pointer;
+        color: #475569;
+      }
+      .mispropuesta-item {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 12px;
+      }
+      .mispropuesta-meta {
+        color: #64748b;
+        margin-top: 5px;
+      }
+      .estado-pill {
+        display: inline-block;
+        padding: 4px 9px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .estado-pendiente {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .estado-publicada {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .estado-rechazada {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .mispropuestas-estado {
+        color: #64748b;
+        font-size: 14px;
+      }
 
-    .catalogo-admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10003;padding:18px;overflow:auto}.catalogo-admin-overlay.abierto{display:block}.catalogo-admin-modal{max-width:980px;margin:20px auto;background:#fff;color:#1f2937;border-radius:14px;box-shadow:0 10px 35px #0005;padding:20px;position:relative}.catalogo-admin-cerrar{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;cursor:pointer;color:#475569}.catalogo-admin-buscar{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px;box-sizing:border-box;margin:8px 0}.catalogo-admin-item{border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-top:10px}.catalogo-admin-meta{color:#64748b;font-size:14px;margin-top:4px}.catalogo-admin-acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.catalogo-admin-btn{padding:9px 12px;border:0;border-radius:7px;font-weight:700;cursor:pointer}.catalogo-admin-editar{background:#1565c0;color:#fff}.catalogo-admin-toggle{background:#e5e7eb;color:#1f2937}.catalogo-admin-form label{font-weight:700;display:block;margin-top:10px}.catalogo-admin-form input,.catalogo-admin-form textarea{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:7px;margin-top:5px;box-sizing:border-box}.catalogo-admin-form textarea{min-height:180px}.catalogo-admin-momentos{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:7px;margin-top:7px}.catalogo-admin-momento{font-weight:400!important;background:#f8fafc;padding:7px;border-radius:7px}.catalogo-admin-momento input{width:auto;margin-right:6px}.catalogo-admin-estado{color:#64748b;font-size:14px}
-  </style>
-</head>
-<body>
-  <header>
-    <h2>Cancionero</h2>
-    <span id="estadoNube" style="font-size:12px">☁ Conectando...</span>
-    <button onclick="iniciarCelebracion()">▶ Iniciar</button>
-    <button onclick="nuevaCelebracion()">🗑 Nuevo</button>
-  </header>
-  <div class="contenedor">
-    <div class="panel panelMomentos">
-      <h3 class="tituloMomentos">Momentos Litúrgicos</h3>
-      <div class="scrollMomentos">
-        <div class="momento" onclick="cargar('Entrada')">Entrada</div><div class="momento" onclick="cargar('Perdon')">Perdón</div><div class="momento" onclick="cargar('Gloria')">Gloria</div><div class="momento" onclick="cargar('Antifona')">Antifona</div><div class="momento" onclick="cargar('Colecta')">Colecta</div><div class="momento" onclick="cargar('Ofertorio')">Ofertorio</div><div class="momento" onclick="cargar('Santo')">Santo</div><div class="momento" onclick="cargar('Padre')">Padrenuestro</div><div class="momento" onclick="cargar('Cordero')">Cordero</div><div class="momento" onclick="cargar('Comunion')">Comunión</div><div class="momento" onclick="cargar('ComunionII')">Comunión II</div><div class="momento" onclick="cargar('Salida')">Salida</div><div class="momento" onclick="cargar('Himno')">Himno</div>
+      .catalogo-admin-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 10003;
+        padding: 18px;
+        overflow: auto;
+      }
+      .catalogo-admin-overlay.abierto {
+        display: block;
+      }
+      .catalogo-admin-modal {
+        max-width: 980px;
+        margin: 20px auto;
+        background: #fff;
+        color: #1f2937;
+        border-radius: 14px;
+        box-shadow: 0 10px 35px #0005;
+        padding: 20px;
+        position: relative;
+      }
+      .catalogo-admin-cerrar {
+        position: absolute;
+        right: 14px;
+        top: 10px;
+        border: 0;
+        background: transparent;
+        font-size: 28px;
+        cursor: pointer;
+        color: #475569;
+      }
+      .catalogo-admin-buscar {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        box-sizing: border-box;
+        margin: 8px 0;
+      }
+      .catalogo-admin-item {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 14px;
+        margin-top: 10px;
+      }
+      .catalogo-admin-meta {
+        color: #64748b;
+        font-size: 14px;
+        margin-top: 4px;
+      }
+      .catalogo-admin-acciones {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .catalogo-admin-btn {
+        padding: 9px 12px;
+        border: 0;
+        border-radius: 7px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .catalogo-admin-editar {
+        background: #1565c0;
+        color: #fff;
+      }
+      .catalogo-admin-toggle {
+        background: #e5e7eb;
+        color: #1f2937;
+      }
+      .catalogo-admin-form label {
+        font-weight: 700;
+        display: block;
+        margin-top: 10px;
+      }
+      .catalogo-admin-form input,
+      .catalogo-admin-form textarea {
+        width: 100%;
+        padding: 9px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        margin-top: 5px;
+        box-sizing: border-box;
+      }
+      .catalogo-admin-form textarea {
+        min-height: 180px;
+      }
+      .catalogo-admin-momentos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+        gap: 7px;
+        margin-top: 7px;
+      }
+      .catalogo-admin-momento {
+        font-weight: 400 !important;
+        background: #f8fafc;
+        padding: 7px;
+        border-radius: 7px;
+      }
+      .catalogo-admin-momento input {
+        width: auto;
+        margin-right: 6px;
+      }
+      .catalogo-admin-estado {
+        color: #64748b;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h2>Cancionero</h2>
+      <span id="estadoNube" style="font-size: 12px">☁ Conectando...</span>
+      <button onclick="iniciarCelebracion()">▶ Iniciar</button>
+      <button onclick="nuevaCelebracion()">🗑 Nuevo</button>
+    </header>
+    <div class="contenedor">
+      <div class="panel panelMomentos">
+        <h3 class="tituloMomentos">Momentos Litúrgicos</h3>
+        <div class="scrollMomentos">
+          <div class="momento" onclick="cargar('Entrada')">Entrada</div>
+          <div class="momento" onclick="cargar('Perdon')">Perdón</div>
+          <div class="momento" onclick="cargar('Gloria')">Gloria</div>
+          <div class="momento" onclick="cargar('Antifona')">Antifona</div>
+          <div class="momento" onclick="cargar('Colecta')">Colecta</div>
+          <div class="momento" onclick="cargar('Ofertorio')">Ofertorio</div>
+          <div class="momento" onclick="cargar('Santo')">Santo</div>
+          <div class="momento" onclick="cargar('Padre')">Padrenuestro</div>
+          <div class="momento" onclick="cargar('Cordero')">Cordero</div>
+          <div class="momento" onclick="cargar('Comunion')">Comunión</div>
+          <div class="momento" onclick="cargar('ComunionII')">Comunión II</div>
+          <div class="momento" onclick="cargar('Salida')">Salida</div>
+          <div class="momento" onclick="cargar('Himno')">Himno</div>
+          <div class="momento" onclick="cargar('Evento')">Evento</div>
+        </div>
+      </div>
+      <div class="panel">
+        <input
+          id="buscador"
+          placeholder="Buscar canción..."
+          onkeyup="buscar()"
+        />
+        <div id="listaCanciones"></div>
+      </div>
+      <div id="seleccion">
+        <h3>Celebración del Día</h3>
+        <div
+          style="
+            background: #fff3cd;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+          "
+        >
+          <b>⚠ Selección compartida:</b> los cambios se guardan para todos. Por
+          favor, no modificar si la celebración ya está preparada.
+        </div>
+        <div id="listaSeleccion"></div>
       </div>
     </div>
-    <div class="panel"><input id="buscador" placeholder="Buscar canción..." onkeyup="buscar()" /><div id="listaCanciones"></div></div>
-    <div id="seleccion"><h3>Celebración del Día</h3><div style="background:#fff3cd;padding:8px;margin-bottom:8px;border-radius:4px"><b>⚠ Selección compartida:</b> los cambios se guardan para todos. Por favor, no modificar si la celebración ya está preparada.</div><div id="listaSeleccion"></div></div>
-  </div>
-  <div id="modoCelebracion" class="oculto"><h1 id="tituloCelebracion"></h1><div id="letraCelebracion"></div><div class="navegacion"><button onclick="anterior()">◀ Anterior</button><button onclick="cerrarCelebracion()">❌ Cerrar</button><button onclick="siguiente()">▶ Siguiente</button></div></div>
-
-  <div id="propuestaOverlay" class="propuesta-overlay" aria-hidden="true">
-    <section class="propuesta-modal" role="dialog" aria-modal="true" aria-labelledby="propuestaTituloModal">
-      <button class="propuesta-cerrar" id="cerrarPropuesta" aria-label="Cerrar">×</button>
-      <h2 id="propuestaTituloModal">Proponer canción</h2>
-      <p class="propuesta-ayuda">La propuesta se guardará como <b>PENDIENTE</b> y no aparecerá en el catálogo público hasta que un administrador la apruebe.</p>
-      <p id="propuestaSesion" class="propuesta-ayuda"></p>
-      <div id="propuestaForm">
-        <label>Título *<input id="propuestaTitulo" /></label>
-        <label>Autor<input id="propuestaAutor" /></label>
-        <label>Momentos litúrgicos *</label><div class="propuesta-momentos" id="propuestaMomentos"></div>
-        <label>Letra *<textarea id="propuestaLetra"></textarea></label>
-        <label>Tono (opcional)<input id="propuestaTono" /></label>
-        <div class="propuesta-acciones"><button class="propuesta-primary" id="guardarPropuesta">Enviar propuesta</button><button class="propuesta-secondary" id="cancelarPropuesta">Cancelar</button></div>
-        <p id="propuestaResultado" class="propuesta-resultado"></p>
+    <div id="modoCelebracion" class="oculto">
+      <h1 id="tituloCelebracion"></h1>
+      <div id="letraCelebracion"></div>
+      <div class="navegacion">
+        <button onclick="anterior()">◀ Anterior</button
+        ><button onclick="cerrarCelebracion()">❌ Cerrar</button
+        ><button onclick="siguiente()">▶ Siguiente</button>
       </div>
-    </section>
-  </div>
+    </div>
 
+    <div id="propuestaOverlay" class="propuesta-overlay" aria-hidden="true">
+      <section
+        class="propuesta-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="propuestaTituloModal"
+      >
+        <button
+          class="propuesta-cerrar"
+          id="cerrarPropuesta"
+          aria-label="Cerrar"
+        >
+          ×
+        </button>
+        <h2 id="propuestaTituloModal">Proponer canción</h2>
+        <p class="propuesta-ayuda">
+          La propuesta se guardará como <b>PENDIENTE</b> y no aparecerá en el
+          catálogo público hasta que un administrador la apruebe.
+        </p>
+        <p id="propuestaSesion" class="propuesta-ayuda"></p>
+        <div id="propuestaForm">
+          <label>Título *<input id="propuestaTitulo" /></label>
+          <label>Autor<input id="propuestaAutor" /></label>
+          <label>Momentos litúrgicos *</label>
+          <div class="propuesta-momentos" id="propuestaMomentos"></div>
+          <label>Letra *<textarea id="propuestaLetra"></textarea></label>
+          <label>Tono (opcional)<input id="propuestaTono" /></label>
+          <div class="propuesta-acciones">
+            <button class="propuesta-primary" id="guardarPropuesta">
+              Enviar propuesta</button
+            ><button class="propuesta-secondary" id="cancelarPropuesta">
+              Cancelar
+            </button>
+          </div>
+          <p id="propuestaResultado" class="propuesta-resultado"></p>
+        </div>
+      </section>
+    </div>
 
-  <div id="pendientesOverlay" class="pendientes-overlay" aria-hidden="true">
-    <section class="pendientes-modal" role="dialog" aria-modal="true" aria-labelledby="pendientesTituloModal">
-      <button class="pendientes-cerrar" id="cerrarPendientes" aria-label="Cerrar">x</button>
-      <h2 id="pendientesTituloModal">Propuestas pendientes</h2>
-      <p id="pendientesSesion" class="pendientes-estado">Comprobando administrador...</p>
-      <div id="pendientesPanel" style="display:none">
-        <button id="recargarPendientes" class="pendiente-blue">Recargar pendientes</button>
-        <div id="pendientesLista"></div>
-      </div>
-      <p id="pendientesLog" class="pendientes-estado"></p>
-    </section>
-  </div>
+    <div id="pendientesOverlay" class="pendientes-overlay" aria-hidden="true">
+      <section
+        class="pendientes-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pendientesTituloModal"
+      >
+        <button
+          class="pendientes-cerrar"
+          id="cerrarPendientes"
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <h2 id="pendientesTituloModal">Propuestas pendientes</h2>
+        <p id="pendientesSesion" class="pendientes-estado">
+          Comprobando administrador...
+        </p>
+        <div id="pendientesPanel" style="display: none">
+          <button id="recargarPendientes" class="pendiente-blue">
+            Recargar pendientes
+          </button>
+          <div id="pendientesLista"></div>
+        </div>
+        <p id="pendientesLog" class="pendientes-estado"></p>
+      </section>
+    </div>
 
+    <div
+      id="misPropuestasOverlay"
+      class="mispropuestas-overlay"
+      aria-hidden="true"
+    >
+      <section
+        class="mispropuestas-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="misPropuestasTitulo"
+      >
+        <button
+          class="mispropuestas-cerrar"
+          id="cerrarMisPropuestas"
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <h2 id="misPropuestasTitulo">Mis propuestas</h2>
+        <p id="misPropuestasSesion" class="mispropuestas-estado"></p>
+        <div id="misPropuestasLista"></div>
+        <p id="misPropuestasLog" class="mispropuestas-estado"></p>
+      </section>
+    </div>
 
-  <div id="misPropuestasOverlay" class="mispropuestas-overlay" aria-hidden="true">
-    <section class="mispropuestas-modal" role="dialog" aria-modal="true" aria-labelledby="misPropuestasTitulo">
-      <button class="mispropuestas-cerrar" id="cerrarMisPropuestas" aria-label="Cerrar">x</button>
-      <h2 id="misPropuestasTitulo">Mis propuestas</h2>
-      <p id="misPropuestasSesion" class="mispropuestas-estado"></p>
-      <div id="misPropuestasLista"></div>
-      <p id="misPropuestasLog" class="mispropuestas-estado"></p>
-    </section>
-  </div>
+    <div
+      id="catalogoAdminOverlay"
+      class="catalogo-admin-overlay"
+      aria-hidden="true"
+    >
+      <section
+        class="catalogo-admin-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="catalogoAdminTitulo"
+      >
+        <button
+          class="catalogo-admin-cerrar"
+          id="cerrarCatalogoAdmin"
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <h2 id="catalogoAdminTitulo">Administrar catálogo</h2>
+        <p id="catalogoAdminSesion" class="catalogo-admin-estado"></p>
+        <div id="catalogoAdminPanel" style="display: none">
+          <input
+            id="catalogoAdminBuscar"
+            class="catalogo-admin-buscar"
+            placeholder="Buscar canción por título o autor..."
+          />
+          <div id="catalogoAdminLista"></div>
+        </div>
+        <p id="catalogoAdminLog" class="catalogo-admin-estado"></p>
+      </section>
+    </div>
 
+    <script src="js/canciones.js"></script>
+    <script src="js/app.js"></script>
+    <script type="module" src="js/firebase.js"></script>
+    <script type="module">
+      import { getApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc,
+        getDocs,
+        collection,
+        query,
+        where,
+        updateDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-  <div id="catalogoAdminOverlay" class="catalogo-admin-overlay" aria-hidden="true">
-    <section class="catalogo-admin-modal" role="dialog" aria-modal="true" aria-labelledby="catalogoAdminTitulo">
-      <button class="catalogo-admin-cerrar" id="cerrarCatalogoAdmin" aria-label="Cerrar">x</button>
-      <h2 id="catalogoAdminTitulo">Administrar catálogo</h2>
-      <p id="catalogoAdminSesion" class="catalogo-admin-estado"></p>
-      <div id="catalogoAdminPanel" style="display:none">
-        <input id="catalogoAdminBuscar" class="catalogo-admin-buscar" placeholder="Buscar canción por título o autor...">
-        <div id="catalogoAdminLista"></div>
-      </div>
-      <p id="catalogoAdminLog" class="catalogo-admin-estado"></p>
-    </section>
-  </div>
+      const app = getApp(),
+        auth = getAuth(app),
+        db = getFirestore(app);
+      const $ = (id) => document.getElementById(id);
+      const cats = [
+        "Entrada",
+        "Perdon",
+        "Gloria",
+        "Antifona",
+        "Colecta",
+        "Ofertorio",
+        "Santo",
+        "Padre",
+        "Cordero",
+        "Comunion",
+        "ComunionII",
+        "Salida",
+        "Himno",
+        "Evento",
+      ];
+      let perfilPropuesta = null;
+      $("propuestaMomentos").innerHTML = cats
+        .map(
+          (c) =>
+            `<label class="propuesta-momento"><input type="checkbox" value="${c}">${c}</label>`
+        )
+        .join("");
 
-  <script src="js/canciones.js"></script>
-  <script src="js/app.js"></script>
-  <script type="module" src="js/firebase.js"></script>
-  <script type="module">
-    import { getApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, getDocs, collection, query, where, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+      function limpiarPropuesta() {
+        [
+          "propuestaTitulo",
+          "propuestaAutor",
+          "propuestaLetra",
+          "propuestaTono",
+        ].forEach((id) => ($(id).value = ""));
+        document
+          .querySelectorAll("#propuestaMomentos input")
+          .forEach((x) => (x.checked = false));
+        $("propuestaResultado").textContent = "";
+      }
+      function cerrar() {
+        $("propuestaOverlay").classList.remove("abierto");
+        $("propuestaOverlay").setAttribute("aria-hidden", "true");
+      }
+      async function abrir() {
+        const u = auth.currentUser;
+        perfilPropuesta = null;
+        $("propuestaResultado").textContent = "";
+        if (!u) {
+          $("propuestaSesion").innerHTML =
+            '<span class="propuesta-bad">Necesitas iniciar sesión como COLABORADOR o ADMINISTRADOR.</span>';
+          $("propuestaForm").style.display = "none";
+        } else
+          try {
+            const s = await getDoc(doc(db, "usuarios", u.uid));
+            if (!s.exists()) throw Error("Perfil no encontrado");
+            const p = s.data();
+            if (
+              p.activo !== true ||
+              !["COLABORADOR", "ADMINISTRADOR"].includes(p.rol)
+            )
+              throw Error("Usuario sin permiso para proponer");
+            perfilPropuesta = {
+              uid: u.uid,
+              email: u.email,
+              nombre: p.nombre || "",
+              rol: p.rol,
+            };
+            $("propuestaSesion").innerHTML = `✓ ${
+              perfilPropuesta.nombre || perfilPropuesta.email
+            } · <b>${perfilPropuesta.rol}</b>`;
+            $("propuestaForm").style.display = "block";
+          } catch (e) {
+            $(
+              "propuestaSesion"
+            ).innerHTML = `<span class="propuesta-bad">${e.message}</span>`;
+            $("propuestaForm").style.display = "none";
+          }
+        $("propuestaOverlay").classList.add("abierto");
+        $("propuestaOverlay").setAttribute("aria-hidden", "false");
+      }
+      window.abrirProponerCancion = abrir;
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (
+          a &&
+          /proponer-cancion\.html(?:[?#].*)?$/.test(
+            a.getAttribute("href") || ""
+          )
+        ) {
+          e.preventDefault();
+          abrir();
+        }
+      });
+      $("cerrarPropuesta").onclick = cerrar;
+      $("cancelarPropuesta").onclick = cerrar;
+      $("propuestaOverlay").addEventListener("click", (e) => {
+        if (e.target === $("propuestaOverlay")) cerrar();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") cerrar();
+      });
+      $("guardarPropuesta").onclick = async () => {
+        if (!perfilPropuesta) return;
+        const titulo = $("propuestaTitulo").value.trim(),
+          autor = $("propuestaAutor").value.trim(),
+          letra = $("propuestaLetra").value.trim(),
+          tono = $("propuestaTono").value.trim();
+        const momentos = [
+          ...document.querySelectorAll("#propuestaMomentos input:checked"),
+        ].map((x) => x.value);
+        if (!titulo || !letra || !momentos.length) {
+          $("propuestaResultado").innerHTML =
+            '<span class="propuesta-bad">Completa título, letra y al menos un momento litúrgico.</span>';
+          return;
+        }
+        const id = crypto.randomUUID();
+        const data = {
+          id,
+          titulo,
+          autor,
+          momentos,
+          letra,
+          tono,
+          acordes: "",
+          estado: "PENDIENTE",
+          activo: true,
+          creadoPor: perfilPropuesta.uid,
+          creadoPorNombre: perfilPropuesta.nombre || "",
+          creadoPorEmail: perfilPropuesta.email || "",
+          creadoAt: serverTimestamp(),
+          actualizadoAt: serverTimestamp(),
+        };
+        $("guardarPropuesta").disabled = true;
+        $("propuestaResultado").textContent = "Guardando propuesta…";
+        try {
+          await setDoc(doc(db, "canciones", id), data);
+          $("propuestaResultado").innerHTML =
+            '<span class="propuesta-ok">✓ Propuesta enviada. Quedó PENDIENTE de revisión.</span>';
+          limpiarPropuesta();
+        } catch (e) {
+          console.error("Propuesta:", e);
+          $("propuestaResultado").innerHTML =
+            '<span class="propuesta-bad">✗ No se pudo guardar la propuesta.</span>';
+        } finally {
+          $("guardarPropuesta").disabled = false;
+        }
+      };
 
-    const app=getApp(), auth=getAuth(app), db=getFirestore(app);
-    const $=id=>document.getElementById(id);
-    const cats=["Entrada","Perdon","Gloria","Antifona","Colecta","Ofertorio","Santo","Padre","Cordero","Comunion","ComunionII","Salida","Himno"];
-    let perfilPropuesta=null;
-    $('propuestaMomentos').innerHTML=cats.map(c=>`<label class="propuesta-momento"><input type="checkbox" value="${c}">${c}</label>`).join('');
+      // Panel integrado de propuestas pendientes
+      let perfilPendientes = null;
+      const pe = (id) => document.getElementById(id);
+      function escPend(v) {
+        return String(v).replace(
+          /[&<>]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])
+        );
+      }
+      function attrPend(v) {
+        return escPend(v).replace(/\"/g, "&quot;");
+      }
+      async function cargarPendientes() {
+        if (!perfilPendientes) return;
+        pe("pendientesLog").textContent = "Leyendo propuestas pendientes...";
+        try {
+          const snap = await getDocs(collection(db, "canciones"));
+          const rows = snap.docs.filter((x) => x.data().estado === "PENDIENTE");
+          pe("pendientesLista").innerHTML = rows.length
+            ? rows
+                .map((x) => {
+                  const d = x.data(),
+                    id = x.id;
+                  return `<div class="pendiente-item"><b>${escPend(
+                    d.titulo || "Sin titulo"
+                  )}</b><div class="pendiente-muted">${escPend(
+                    d.autor || ""
+                  )} · ${escPend(
+                    (d.momentos || []).join(", ")
+                  )}</div><p>Propuesto por: ${escPend(
+                    d.creadoPorNombre || d.creadoPorEmail || d.creadoPor || ""
+                  )}</p><label>Titulo<input id="pt_${id}" value="${attrPend(
+                    d.titulo || ""
+                  )}"></label><label>Autor<input id="pa_${id}" value="${attrPend(
+                    d.autor || ""
+                  )}"></label><label>Letra<textarea id="pl_${id}">${escPend(
+                    d.letra || ""
+                  )}</textarea></label><button class="pendiente-ok" onclick="aprobarPendiente('${id}')">Aprobar</button><button class="pendiente-bad" onclick="rechazarPendiente('${id}')">Rechazar</button></div>`;
+                })
+                .join("")
+            : "<p>No hay propuestas pendientes.</p>";
+          pe(
+            "pendientesLog"
+          ).textContent = `Pendientes encontradas: ${rows.length}`;
+        } catch (e) {
+          console.error("Pendientes:", e);
+          pe("pendientesLog").textContent =
+            (e.code || "ERROR") + ": " + e.message;
+        }
+      }
+      async function abrirPendientes() {
+        const u = auth.currentUser;
+        perfilPendientes = null;
+        pe("pendientesPanel").style.display = "none";
+        pe("pendientesLog").textContent = "";
+        if (!u) {
+          pe("pendientesSesion").textContent =
+            "Inicia sesion como ADMINISTRADOR.";
+        } else
+          try {
+            const ss = await getDoc(doc(db, "usuarios", u.uid));
+            if (!ss.exists()) throw Error("Perfil no encontrado");
+            const p = ss.data();
+            if (p.activo !== true || p.rol !== "ADMINISTRADOR")
+              throw Error("Esta pantalla requiere rol ADMINISTRADOR");
+            perfilPendientes = {
+              uid: u.uid,
+              nombre: p.nombre || "",
+              email: u.email,
+            };
+            pe("pendientesSesion").textContent = `${
+              perfilPendientes.nombre || perfilPendientes.email
+            } · ADMINISTRADOR`;
+            pe("pendientesPanel").style.display = "block";
+            await cargarPendientes();
+          } catch (e) {
+            pe("pendientesSesion").textContent = e.message;
+          }
+        pe("pendientesOverlay").classList.add("abierto");
+        pe("pendientesOverlay").setAttribute("aria-hidden", "false");
+      }
+      function cerrarPendientes() {
+        pe("pendientesOverlay").classList.remove("abierto");
+        pe("pendientesOverlay").setAttribute("aria-hidden", "true");
+      }
+      window.abrirPendientes = abrirPendientes;
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (
+          a &&
+          (a.getAttribute("href") || "").includes("admin-pendientes.html")
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+          abrirPendientes();
+        }
+      });
+      pe("cerrarPendientes").onclick = cerrarPendientes;
+      pe("recargarPendientes").onclick = cargarPendientes;
+      pe("pendientesOverlay").addEventListener("click", (e) => {
+        if (e.target === pe("pendientesOverlay")) cerrarPendientes();
+      });
+      window.aprobarPendiente = async (id) => {
+        try {
+          await updateDoc(doc(db, "canciones", id), {
+            titulo: pe("pt_" + id).value.trim(),
+            autor: pe("pa_" + id).value.trim(),
+            letra: pe("pl_" + id).value.trim(),
+            estado: "PUBLICADA",
+            activo: true,
+            revisadoPor: perfilPendientes.uid,
+            revisadoAt: serverTimestamp(),
+            actualizadoAt: serverTimestamp(),
+          });
+          pe("pendientesLog").textContent = "Propuesta aprobada";
+          await cargarPendientes();
+        } catch (e) {
+          pe("pendientesLog").textContent =
+            (e.code || "ERROR") + ": " + e.message;
+        }
+      };
+      window.rechazarPendiente = async (id) => {
+        try {
+          await updateDoc(doc(db, "canciones", id), {
+            estado: "RECHAZADA",
+            activo: false,
+            revisadoPor: perfilPendientes.uid,
+            revisadoAt: serverTimestamp(),
+            actualizadoAt: serverTimestamp(),
+          });
+          pe("pendientesLog").textContent = "Propuesta rechazada";
+          await cargarPendientes();
+        } catch (e) {
+          pe("pendientesLog").textContent =
+            (e.code || "ERROR") + ": " + e.message;
+        }
+      };
 
-    function limpiarPropuesta(){['propuestaTitulo','propuestaAutor','propuestaLetra','propuestaTono'].forEach(id=>$(id).value='');document.querySelectorAll('#propuestaMomentos input').forEach(x=>x.checked=false);$('propuestaResultado').textContent=''}
-    function cerrar(){ $('propuestaOverlay').classList.remove('abierto'); $('propuestaOverlay').setAttribute('aria-hidden','true'); }
-    async function abrir(){
-      const u=auth.currentUser; perfilPropuesta=null; $('propuestaResultado').textContent='';
-      if(!u){ $('propuestaSesion').innerHTML='<span class="propuesta-bad">Necesitas iniciar sesión como COLABORADOR o ADMINISTRADOR.</span>'; $('propuestaForm').style.display='none'; }
-      else try{
-        const s=await getDoc(doc(db,'usuarios',u.uid)); if(!s.exists()) throw Error('Perfil no encontrado'); const p=s.data();
-        if(p.activo!==true || !['COLABORADOR','ADMINISTRADOR'].includes(p.rol)) throw Error('Usuario sin permiso para proponer');
-        perfilPropuesta={uid:u.uid,email:u.email,nombre:p.nombre||'',rol:p.rol}; $('propuestaSesion').innerHTML=`✓ ${perfilPropuesta.nombre||perfilPropuesta.email} · <b>${perfilPropuesta.rol}</b>`; $('propuestaForm').style.display='block';
-      }catch(e){ $('propuestaSesion').innerHTML=`<span class="propuesta-bad">${e.message}</span>`; $('propuestaForm').style.display='none'; }
-      $('propuestaOverlay').classList.add('abierto'); $('propuestaOverlay').setAttribute('aria-hidden','false');
-    }
-    window.abrirProponerCancion=abrir;
-    document.addEventListener('click',e=>{ const a=e.target.closest('a'); if(a && /proponer-cancion\.html(?:[?#].*)?$/.test(a.getAttribute('href')||'')){ e.preventDefault(); abrir(); }});
-    $('cerrarPropuesta').onclick=cerrar; $('cancelarPropuesta').onclick=cerrar;
-    $('propuestaOverlay').addEventListener('click',e=>{if(e.target===$('propuestaOverlay'))cerrar()});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrar()});
-    $('guardarPropuesta').onclick=async()=>{
-      if(!perfilPropuesta)return;
-      const titulo=$('propuestaTitulo').value.trim(), autor=$('propuestaAutor').value.trim(), letra=$('propuestaLetra').value.trim(), tono=$('propuestaTono').value.trim();
-      const momentos=[...document.querySelectorAll('#propuestaMomentos input:checked')].map(x=>x.value);
-      if(!titulo || !letra || !momentos.length){$('propuestaResultado').innerHTML='<span class="propuesta-bad">Completa título, letra y al menos un momento litúrgico.</span>';return}
-      const id=crypto.randomUUID(); const data={id,titulo,autor,momentos,letra,tono,acordes:'',estado:'PENDIENTE',activo:true,creadoPor:perfilPropuesta.uid,creadoPorNombre:perfilPropuesta.nombre||'',creadoPorEmail:perfilPropuesta.email||'',creadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()};
-      $('guardarPropuesta').disabled=true; $('propuestaResultado').textContent='Guardando propuesta…';
-      try{await setDoc(doc(db,'canciones',id),data);$('propuestaResultado').innerHTML='<span class="propuesta-ok">✓ Propuesta enviada. Quedó PENDIENTE de revisión.</span>';limpiarPropuesta();}
-      catch(e){console.error('Propuesta:',e);$('propuestaResultado').innerHTML='<span class="propuesta-bad">✗ No se pudo guardar la propuesta.</span>';}
-      finally{$('guardarPropuesta').disabled=false}
-    };
+      // Ajusta accesos adicionales segun rol visible en el menu
+      function ajustarMenuIntegrado() {
+        const texto = document.body.innerText || "";
+        const enlaceProponer = [...document.querySelectorAll("a")].find((a) =>
+          (a.getAttribute("href") || "").includes("proponer-cancion.html")
+        );
+        const enlacePendientes = [...document.querySelectorAll("a")].find((a) =>
+          (a.getAttribute("href") || "").includes("admin-pendientes.html")
+        );
+        const esAdmin = texto.includes("ADMINISTRADOR") && !!enlacePendientes;
+        const esColaborador =
+          texto.includes("COLABORADOR") && !!enlaceProponer && !esAdmin;
+        let mis = document.getElementById("btnMisPropuestas");
+        if (esColaborador && enlaceProponer) {
+          if (!mis) {
+            mis = document.createElement("a");
+            mis.id = "btnMisPropuestas";
+            mis.href = "mis-propuestas.html";
+            mis.textContent = "Mis propuestas";
+            mis.className = enlaceProponer.className;
+            mis.style.cssText = enlaceProponer.style.cssText;
+            enlaceProponer.insertAdjacentElement("afterend", mis);
+          }
+        } else if (mis) {
+          mis.remove();
+        }
+        let adm = document.getElementById("btnAdministrarCatalogo");
+        if (esAdmin && enlacePendientes) {
+          if (!adm) {
+            adm = document.createElement("a");
+            adm.id = "btnAdministrarCatalogo";
+            adm.href = "administrar-catalogo.html";
+            adm.textContent = "Administrar catálogo";
+            adm.className = enlacePendientes.className;
+            adm.style.cssText = enlacePendientes.style.cssText;
+            enlacePendientes.insertAdjacentElement("afterend", adm);
+          }
+        } else if (adm) {
+          adm.remove();
+        }
+      }
+      const obsMenuIntegrado = new MutationObserver(ajustarMenuIntegrado);
+      obsMenuIntegrado.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+      ajustarMenuIntegrado();
 
+      // Panel integrado Mis propuestas
+      const mp = (id) => document.getElementById(id);
+      function estadoClase(estado) {
+        return estado === "PUBLICADA"
+          ? "estado-publicada"
+          : estado === "RECHAZADA"
+          ? "estado-rechazada"
+          : "estado-pendiente";
+      }
+      function estadoTexto(estado) {
+        return estado === "PUBLICADA"
+          ? "PUBLICADA"
+          : estado === "RECHAZADA"
+          ? "RECHAZADA"
+          : "PENDIENTE";
+      }
+      async function abrirMisPropuestas() {
+        const u = auth.currentUser;
+        mp("misPropuestasLista").innerHTML = "";
+        mp("misPropuestasLog").textContent = "";
+        if (!u) {
+          mp("misPropuestasSesion").textContent =
+            "Necesitas iniciar sesion para ver tus propuestas.";
+        } else
+          try {
+            const ss = await getDoc(doc(db, "usuarios", u.uid));
+            if (!ss.exists()) throw Error("Perfil no encontrado");
+            const p = ss.data();
+            if (
+              p.activo !== true ||
+              !["COLABORADOR", "ADMINISTRADOR"].includes(p.rol)
+            )
+              throw Error("Usuario sin permiso para consultar propuestas");
+            mp("misPropuestasSesion").textContent = `${p.nombre || u.email} · ${
+              p.rol
+            }`;
+            mp("misPropuestasLog").textContent = "Leyendo tus propuestas...";
+            const qMis = query(
+              collection(db, "canciones"),
+              where("creadoPor", "==", u.uid)
+            );
+            const snap = await getDocs(qMis);
+            const rows = snap.docs.map((x) => x.data());
+            mp("misPropuestasLista").innerHTML = rows.length
+              ? rows
+                  .map(
+                    (d) =>
+                      `<div class="mispropuesta-item"><span class="estado-pill ${estadoClase(
+                        d.estado
+                      )}">${estadoTexto(d.estado)}</span><div><b>${escPend(
+                        d.titulo || "Sin titulo"
+                      )}</b></div><div class="mispropuesta-meta">${escPend(
+                        d.autor || ""
+                      )} ${
+                        d.momentos?.length
+                          ? " · " + escPend(d.momentos.join(", "))
+                          : ""
+                      }</div></div>`
+                  )
+                  .join("")
+              : "<p>Todavia no tienes propuestas.</p>";
+            mp(
+              "misPropuestasLog"
+            ).textContent = `Propuestas encontradas: ${rows.length}`;
+          } catch (e) {
+            console.error("Mis propuestas:", e);
+            mp("misPropuestasSesion").textContent = e.message;
+            mp("misPropuestasLog").textContent =
+              (e.code || "ERROR") + ": " + e.message;
+          }
+        mp("misPropuestasOverlay").classList.add("abierto");
+        mp("misPropuestasOverlay").setAttribute("aria-hidden", "false");
+      }
+      function cerrarMisPropuestas() {
+        mp("misPropuestasOverlay").classList.remove("abierto");
+        mp("misPropuestasOverlay").setAttribute("aria-hidden", "true");
+      }
+      window.abrirMisPropuestas = abrirMisPropuestas;
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (
+          a &&
+          (a.getAttribute("href") || "").includes("mis-propuestas.html")
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+          abrirMisPropuestas();
+        }
+      });
+      mp("cerrarMisPropuestas").onclick = cerrarMisPropuestas;
+      mp("misPropuestasOverlay").addEventListener("click", (e) => {
+        if (e.target === mp("misPropuestasOverlay")) cerrarMisPropuestas();
+      });
 
-    // Panel integrado de propuestas pendientes
-    let perfilPendientes=null;
-    const pe=id=>document.getElementById(id);
-    function escPend(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-    function attrPend(v){return escPend(v).replace(/\"/g,'&quot;')}
-    async function cargarPendientes(){
-      if(!perfilPendientes)return;
-      pe('pendientesLog').textContent='Leyendo propuestas pendientes...';
-      try{
-        const snap=await getDocs(collection(db,'canciones'));
-        const rows=snap.docs.filter(x=>x.data().estado==='PENDIENTE');
-        pe('pendientesLista').innerHTML=rows.length?rows.map(x=>{const d=x.data(),id=x.id;return `<div class="pendiente-item"><b>${escPend(d.titulo||'Sin titulo')}</b><div class="pendiente-muted">${escPend(d.autor||'')} · ${escPend((d.momentos||[]).join(', '))}</div><p>Propuesto por: ${escPend(d.creadoPorNombre||d.creadoPorEmail||d.creadoPor||'')}</p><label>Titulo<input id="pt_${id}" value="${attrPend(d.titulo||'')}"></label><label>Autor<input id="pa_${id}" value="${attrPend(d.autor||'')}"></label><label>Letra<textarea id="pl_${id}">${escPend(d.letra||'')}</textarea></label><button class="pendiente-ok" onclick="aprobarPendiente('${id}')">Aprobar</button><button class="pendiente-bad" onclick="rechazarPendiente('${id}')">Rechazar</button></div>`}).join(''):'<p>No hay propuestas pendientes.</p>';
-        pe('pendientesLog').textContent=`Pendientes encontradas: ${rows.length}`;
-      }catch(e){console.error('Pendientes:',e);pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}
-    }
-    async function abrirPendientes(){
-      const u=auth.currentUser;perfilPendientes=null;pe('pendientesPanel').style.display='none';pe('pendientesLog').textContent='';
-      if(!u){pe('pendientesSesion').textContent='Inicia sesion como ADMINISTRADOR.';}
-      else try{const ss=await getDoc(doc(db,'usuarios',u.uid));if(!ss.exists())throw Error('Perfil no encontrado');const p=ss.data();if(p.activo!==true||p.rol!=='ADMINISTRADOR')throw Error('Esta pantalla requiere rol ADMINISTRADOR');perfilPendientes={uid:u.uid,nombre:p.nombre||'',email:u.email};pe('pendientesSesion').textContent=`${perfilPendientes.nombre||perfilPendientes.email} · ADMINISTRADOR`;pe('pendientesPanel').style.display='block';await cargarPendientes()}catch(e){pe('pendientesSesion').textContent=e.message}
-      pe('pendientesOverlay').classList.add('abierto');pe('pendientesOverlay').setAttribute('aria-hidden','false');
-    }
-    function cerrarPendientes(){pe('pendientesOverlay').classList.remove('abierto');pe('pendientesOverlay').setAttribute('aria-hidden','true')}
-    window.abrirPendientes=abrirPendientes;
-    document.addEventListener('click',e=>{const a=e.target.closest('a');if(a && (a.getAttribute('href')||'').includes('admin-pendientes.html')){e.preventDefault();e.stopPropagation();abrirPendientes();}});
-    pe('cerrarPendientes').onclick=cerrarPendientes;pe('recargarPendientes').onclick=cargarPendientes;pe('pendientesOverlay').addEventListener('click',e=>{if(e.target===pe('pendientesOverlay'))cerrarPendientes()});
-    window.aprobarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{titulo:pe('pt_'+id).value.trim(),autor:pe('pa_'+id).value.trim(),letra:pe('pl_'+id).value.trim(),estado:'PUBLICADA',activo:true,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta aprobada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
-    window.rechazarPendiente=async id=>{try{await updateDoc(doc(db,'canciones',id),{estado:'RECHAZADA',activo:false,revisadoPor:perfilPendientes.uid,revisadoAt:serverTimestamp(),actualizadoAt:serverTimestamp()});pe('pendientesLog').textContent='Propuesta rechazada';await cargarPendientes()}catch(e){pe('pendientesLog').textContent=(e.code||'ERROR')+': '+e.message}};
-
-
-    // Ajusta accesos adicionales segun rol visible en el menu
-    function ajustarMenuIntegrado(){
-      const texto=document.body.innerText||'';
-      const enlaceProponer=[...document.querySelectorAll('a')].find(a=>(a.getAttribute('href')||'').includes('proponer-cancion.html'));
-      const enlacePendientes=[...document.querySelectorAll('a')].find(a=>(a.getAttribute('href')||'').includes('admin-pendientes.html'));
-      const esAdmin=texto.includes('ADMINISTRADOR') && !!enlacePendientes;
-      const esColaborador=texto.includes('COLABORADOR') && !!enlaceProponer && !esAdmin;
-      let mis=document.getElementById('btnMisPropuestas');
-      if(esColaborador && enlaceProponer){
-        if(!mis){mis=document.createElement('a');mis.id='btnMisPropuestas';mis.href='mis-propuestas.html';mis.textContent='Mis propuestas';mis.className=enlaceProponer.className;mis.style.cssText=enlaceProponer.style.cssText;enlaceProponer.insertAdjacentElement('afterend',mis)}
-      } else if(mis){mis.remove()}
-      let adm=document.getElementById('btnAdministrarCatalogo');
-      if(esAdmin && enlacePendientes){
-        if(!adm){adm=document.createElement('a');adm.id='btnAdministrarCatalogo';adm.href='administrar-catalogo.html';adm.textContent='Administrar catálogo';adm.className=enlacePendientes.className;adm.style.cssText=enlacePendientes.style.cssText;enlacePendientes.insertAdjacentElement('afterend',adm)}
-      } else if(adm){adm.remove()}
-    }
-    const obsMenuIntegrado=new MutationObserver(ajustarMenuIntegrado);
-    obsMenuIntegrado.observe(document.body,{childList:true,subtree:true});
-    ajustarMenuIntegrado();
-
-    // Panel integrado Mis propuestas
-    const mp=id=>document.getElementById(id);
-    function estadoClase(estado){return estado==='PUBLICADA'?'estado-publicada':estado==='RECHAZADA'?'estado-rechazada':'estado-pendiente'}
-    function estadoTexto(estado){return estado==='PUBLICADA'?'PUBLICADA':estado==='RECHAZADA'?'RECHAZADA':'PENDIENTE'}
-    async function abrirMisPropuestas(){
-      const u=auth.currentUser;mp('misPropuestasLista').innerHTML='';mp('misPropuestasLog').textContent='';
-      if(!u){mp('misPropuestasSesion').textContent='Necesitas iniciar sesion para ver tus propuestas.';}
-      else try{
-        const ss=await getDoc(doc(db,'usuarios',u.uid));if(!ss.exists())throw Error('Perfil no encontrado');const p=ss.data();
-        if(p.activo!==true||!['COLABORADOR','ADMINISTRADOR'].includes(p.rol))throw Error('Usuario sin permiso para consultar propuestas');
-        mp('misPropuestasSesion').textContent=`${p.nombre||u.email} · ${p.rol}`;
-        mp('misPropuestasLog').textContent='Leyendo tus propuestas...';
-        const qMis=query(collection(db,'canciones'),where('creadoPor','==',u.uid));
-        const snap=await getDocs(qMis);
-        const rows=snap.docs.map(x=>x.data());
-        mp('misPropuestasLista').innerHTML=rows.length?rows.map(d=>`<div class="mispropuesta-item"><span class="estado-pill ${estadoClase(d.estado)}">${estadoTexto(d.estado)}</span><div><b>${escPend(d.titulo||'Sin titulo')}</b></div><div class="mispropuesta-meta">${escPend(d.autor||'')} ${d.momentos?.length?' · '+escPend(d.momentos.join(', ')):''}</div></div>`).join(''):'<p>Todavia no tienes propuestas.</p>';
-        mp('misPropuestasLog').textContent=`Propuestas encontradas: ${rows.length}`;
-      }catch(e){console.error('Mis propuestas:',e);mp('misPropuestasSesion').textContent=e.message;mp('misPropuestasLog').textContent=(e.code||'ERROR')+': '+e.message}
-      mp('misPropuestasOverlay').classList.add('abierto');mp('misPropuestasOverlay').setAttribute('aria-hidden','false');
-    }
-    function cerrarMisPropuestas(){mp('misPropuestasOverlay').classList.remove('abierto');mp('misPropuestasOverlay').setAttribute('aria-hidden','true')}
-    window.abrirMisPropuestas=abrirMisPropuestas;
-    document.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&(a.getAttribute('href')||'').includes('mis-propuestas.html')){e.preventDefault();e.stopPropagation();abrirMisPropuestas();}});
-    mp('cerrarMisPropuestas').onclick=cerrarMisPropuestas;mp('misPropuestasOverlay').addEventListener('click',e=>{if(e.target===mp('misPropuestasOverlay'))cerrarMisPropuestas()});
-
-
-    // Panel Administrar catalogo, exclusivo para ADMINISTRADOR
-    const ca=id=>document.getElementById(id);let catalogoAdminRows=[];let perfilCatalogoAdmin=null;
-    function renderCatalogoAdmin(rows){
-      const q=(ca('catalogoAdminBuscar').value||'').trim().toLowerCase();
-      const filtradas=rows.filter(r=>!q||String(r.d.titulo||'').toLowerCase().includes(q)||String(r.d.autor||'').toLowerCase().includes(q));
-      ca('catalogoAdminLista').innerHTML=filtradas.length?filtradas.map(r=>{const d=r.d,id=r.id;return `<div class="catalogo-admin-item"><b>${escPend(d.titulo||'Sin titulo')}</b><div class="catalogo-admin-meta">${escPend(d.autor||'')} · ${escPend((d.momentos||[]).join(', '))} · ${d.activo===false?'INACTIVA':'ACTIVA'}</div><div class="catalogo-admin-acciones"><button class="catalogo-admin-btn catalogo-admin-editar" onclick="editarCatalogoAdmin('${id}')">Editar</button><button class="catalogo-admin-btn catalogo-admin-toggle" onclick="toggleCatalogoAdmin('${id}',${d.activo!==false})">${d.activo===false?'Activar':'Desactivar'}</button></div><div id="cef_${id}"></div></div>`}).join(''):'<p>No se encontraron canciones.</p>';
-    }
-    async function abrirCatalogoAdmin(){
-      const u=auth.currentUser;perfilCatalogoAdmin=null;ca('catalogoAdminPanel').style.display='none';ca('catalogoAdminLog').textContent='';
-      if(!u){ca('catalogoAdminSesion').textContent='Inicia sesion como ADMINISTRADOR.';}
-      else try{const ss=await getDoc(doc(db,'usuarios',u.uid));if(!ss.exists())throw Error('Perfil no encontrado');const p=ss.data();if(p.activo!==true||p.rol!=='ADMINISTRADOR')throw Error('Esta pantalla requiere rol ADMINISTRADOR');perfilCatalogoAdmin={uid:u.uid,nombre:p.nombre||'',email:u.email};ca('catalogoAdminSesion').textContent=`${perfilCatalogoAdmin.nombre||perfilCatalogoAdmin.email} · ADMINISTRADOR`;ca('catalogoAdminLog').textContent='Leyendo catalogo...';const snap=await getDocs(collection(db,'canciones'));catalogoAdminRows=snap.docs.filter(x=>x.data().estado==='PUBLICADA').map(x=>({id:x.id,d:x.data()}));ca('catalogoAdminPanel').style.display='block';renderCatalogoAdmin(catalogoAdminRows);ca('catalogoAdminLog').textContent=`Canciones publicadas encontradas: ${catalogoAdminRows.length}`;}catch(e){console.error('Administrar catalogo:',e);ca('catalogoAdminSesion').textContent=e.message;ca('catalogoAdminLog').textContent=(e.code||'ERROR')+': '+e.message}
-      ca('catalogoAdminOverlay').classList.add('abierto');ca('catalogoAdminOverlay').setAttribute('aria-hidden','false');
-    }
-    function cerrarCatalogoAdmin(){ca('catalogoAdminOverlay').classList.remove('abierto');ca('catalogoAdminOverlay').setAttribute('aria-hidden','true')}
-    window.abrirCatalogoAdmin=abrirCatalogoAdmin;ca('cerrarCatalogoAdmin').onclick=cerrarCatalogoAdmin;ca('catalogoAdminBuscar').oninput=()=>renderCatalogoAdmin(catalogoAdminRows);ca('catalogoAdminOverlay').addEventListener('click',e=>{if(e.target===ca('catalogoAdminOverlay'))cerrarCatalogoAdmin()});
-    document.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&(a.getAttribute('href')||'').includes('administrar-catalogo.html')){e.preventDefault();e.stopPropagation();abrirCatalogoAdmin();}});
-    window.editarCatalogoAdmin=id=>{const r=catalogoAdminRows.find(x=>x.id===id);if(!r)return;const d=r.d;const box=ca('cef_'+id);box.innerHTML=`<div class="catalogo-admin-form"><label>Titulo<input id="cet_${id}" value="${attrPend(d.titulo||'')}"></label><label>Autor<input id="cea_${id}" value="${attrPend(d.autor||'')}"></label><label>Momentos liturgicos</label><div class="catalogo-admin-momentos">${cats.map(c=>`<label class="catalogo-admin-momento"><input type="checkbox" value="${c}" ${(d.momentos||[]).includes(c)?'checked':''}>${c}</label>`).join('')}</div><label>Letra<textarea id="cel_${id}">${escPend(d.letra||'')}</textarea></label><label>Tono<input id="ceto_${id}" value="${attrPend(d.tono||'')}"></label><div class="catalogo-admin-acciones"><button class="catalogo-admin-btn catalogo-admin-editar" onclick="guardarCatalogoAdmin('${id}')">Guardar cambios</button><button class="catalogo-admin-btn catalogo-admin-toggle" onclick="document.getElementById('cef_${id}').innerHTML=''">Cancelar</button></div></div>`};
-    window.guardarCatalogoAdmin=async id=>{try{const momentos=[...ca('cef_'+id).querySelectorAll('.catalogo-admin-momento input:checked')].map(x=>x.value);if(!ca('cet_'+id).value.trim()||!ca('cel_'+id).value.trim()||!momentos.length){ca('catalogoAdminLog').textContent='Completa titulo, letra y al menos un momento liturgico.';return}await updateDoc(doc(db,'canciones',id),{titulo:ca('cet_'+id).value.trim(),autor:ca('cea_'+id).value.trim(),letra:ca('cel_'+id).value.trim(),tono:ca('ceto_'+id).value.trim(),momentos,actualizadoAt:serverTimestamp()});ca('catalogoAdminLog').textContent='Cancion actualizada.';await abrirCatalogoAdmin();}catch(e){ca('catalogoAdminLog').textContent=(e.code||'ERROR')+': '+e.message}};
-    window.toggleCatalogoAdmin=async(id,activoActual)=>{try{await updateDoc(doc(db,'canciones',id),{activo:!activoActual,actualizadoAt:serverTimestamp()});ca('catalogoAdminLog').textContent=activoActual?'Cancion desactivada.':'Cancion activada.';await abrirCatalogoAdmin();}catch(e){ca('catalogoAdminLog').textContent=(e.code||'ERROR')+': '+e.message}};
-  </script>
-</body>
+      // Panel Administrar catalogo, exclusivo para ADMINISTRADOR
+      const ca = (id) => document.getElementById(id);
+      let catalogoAdminRows = [];
+      let perfilCatalogoAdmin = null;
+      function renderCatalogoAdmin(rows) {
+        const q = (ca("catalogoAdminBuscar").value || "").trim().toLowerCase();
+        const filtradas = rows.filter(
+          (r) =>
+            !q ||
+            String(r.d.titulo || "")
+              .toLowerCase()
+              .includes(q) ||
+            String(r.d.autor || "")
+              .toLowerCase()
+              .includes(q)
+        );
+        ca("catalogoAdminLista").innerHTML = filtradas.length
+          ? filtradas
+              .map((r) => {
+                const d = r.d,
+                  id = r.id;
+                return `<div class="catalogo-admin-item"><b>${escPend(
+                  d.titulo || "Sin titulo"
+                )}</b><div class="catalogo-admin-meta">${escPend(
+                  d.autor || ""
+                )} · ${escPend((d.momentos || []).join(", "))} · ${
+                  d.activo === false ? "INACTIVA" : "ACTIVA"
+                }</div><div class="catalogo-admin-acciones"><button class="catalogo-admin-btn catalogo-admin-editar" onclick="editarCatalogoAdmin('${id}')">Editar</button><button class="catalogo-admin-btn catalogo-admin-toggle" onclick="toggleCatalogoAdmin('${id}',${
+                  d.activo !== false
+                })">${
+                  d.activo === false ? "Activar" : "Desactivar"
+                }</button></div><div id="cef_${id}"></div></div>`;
+              })
+              .join("")
+          : "<p>No se encontraron canciones.</p>";
+      }
+      async function abrirCatalogoAdmin() {
+        const u = auth.currentUser;
+        perfilCatalogoAdmin = null;
+        ca("catalogoAdminPanel").style.display = "none";
+        ca("catalogoAdminLog").textContent = "";
+        if (!u) {
+          ca("catalogoAdminSesion").textContent =
+            "Inicia sesion como ADMINISTRADOR.";
+        } else
+          try {
+            const ss = await getDoc(doc(db, "usuarios", u.uid));
+            if (!ss.exists()) throw Error("Perfil no encontrado");
+            const p = ss.data();
+            if (p.activo !== true || p.rol !== "ADMINISTRADOR")
+              throw Error("Esta pantalla requiere rol ADMINISTRADOR");
+            perfilCatalogoAdmin = {
+              uid: u.uid,
+              nombre: p.nombre || "",
+              email: u.email,
+            };
+            ca("catalogoAdminSesion").textContent = `${
+              perfilCatalogoAdmin.nombre || perfilCatalogoAdmin.email
+            } · ADMINISTRADOR`;
+            ca("catalogoAdminLog").textContent = "Leyendo catalogo...";
+            const snap = await getDocs(collection(db, "canciones"));
+            catalogoAdminRows = snap.docs
+              .filter((x) => x.data().estado === "PUBLICADA")
+              .map((x) => ({ id: x.id, d: x.data() }));
+            ca("catalogoAdminPanel").style.display = "block";
+            renderCatalogoAdmin(catalogoAdminRows);
+            ca(
+              "catalogoAdminLog"
+            ).textContent = `Canciones publicadas encontradas: ${catalogoAdminRows.length}`;
+          } catch (e) {
+            console.error("Administrar catalogo:", e);
+            ca("catalogoAdminSesion").textContent = e.message;
+            ca("catalogoAdminLog").textContent =
+              (e.code || "ERROR") + ": " + e.message;
+          }
+        ca("catalogoAdminOverlay").classList.add("abierto");
+        ca("catalogoAdminOverlay").setAttribute("aria-hidden", "false");
+      }
+      function cerrarCatalogoAdmin() {
+        ca("catalogoAdminOverlay").classList.remove("abierto");
+        ca("catalogoAdminOverlay").setAttribute("aria-hidden", "true");
+      }
+      window.abrirCatalogoAdmin = abrirCatalogoAdmin;
+      ca("cerrarCatalogoAdmin").onclick = cerrarCatalogoAdmin;
+      ca("catalogoAdminBuscar").oninput = () =>
+        renderCatalogoAdmin(catalogoAdminRows);
+      ca("catalogoAdminOverlay").addEventListener("click", (e) => {
+        if (e.target === ca("catalogoAdminOverlay")) cerrarCatalogoAdmin();
+      });
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (
+          a &&
+          (a.getAttribute("href") || "").includes("administrar-catalogo.html")
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+          abrirCatalogoAdmin();
+        }
+      });
+      window.editarCatalogoAdmin = (id) => {
+        const r = catalogoAdminRows.find((x) => x.id === id);
+        if (!r) return;
+        const d = r.d;
+        const box = ca("cef_" + id);
+        box.innerHTML = `<div class="catalogo-admin-form"><label>Titulo<input id="cet_${id}" value="${attrPend(
+          d.titulo || ""
+        )}"></label><label>Autor<input id="cea_${id}" value="${attrPend(
+          d.autor || ""
+        )}"></label><label>Momentos liturgicos</label><div class="catalogo-admin-momentos">${cats
+          .map(
+            (c) =>
+              `<label class="catalogo-admin-momento"><input type="checkbox" value="${c}" ${
+                (d.momentos || []).includes(c) ? "checked" : ""
+              }>${c}</label>`
+          )
+          .join("")}</div><label>Letra<textarea id="cel_${id}">${escPend(
+          d.letra || ""
+        )}</textarea></label><label>Tono<input id="ceto_${id}" value="${attrPend(
+          d.tono || ""
+        )}"></label><div class="catalogo-admin-acciones"><button class="catalogo-admin-btn catalogo-admin-editar" onclick="guardarCatalogoAdmin('${id}')">Guardar cambios</button><button class="catalogo-admin-btn catalogo-admin-toggle" onclick="document.getElementById('cef_${id}').innerHTML=''">Cancelar</button></div></div>`;
+      };
+      window.guardarCatalogoAdmin = async (id) => {
+        try {
+          const momentos = [
+            ...ca("cef_" + id).querySelectorAll(
+              ".catalogo-admin-momento input:checked"
+            ),
+          ].map((x) => x.value);
+          if (
+            !ca("cet_" + id).value.trim() ||
+            !ca("cel_" + id).value.trim() ||
+            !momentos.length
+          ) {
+            ca("catalogoAdminLog").textContent =
+              "Completa titulo, letra y al menos un momento liturgico.";
+            return;
+          }
+          await updateDoc(doc(db, "canciones", id), {
+            titulo: ca("cet_" + id).value.trim(),
+            autor: ca("cea_" + id).value.trim(),
+            letra: ca("cel_" + id).value.trim(),
+            tono: ca("ceto_" + id).value.trim(),
+            momentos,
+            actualizadoAt: serverTimestamp(),
+          });
+          ca("catalogoAdminLog").textContent = "Cancion actualizada.";
+          await abrirCatalogoAdmin();
+        } catch (e) {
+          ca("catalogoAdminLog").textContent =
+            (e.code || "ERROR") + ": " + e.message;
+        }
+      };
+      window.toggleCatalogoAdmin = async (id, activoActual) => {
+        try {
+          await updateDoc(doc(db, "canciones", id), {
+            activo: !activoActual,
+            actualizadoAt: serverTimestamp(),
+          });
+          ca("catalogoAdminLog").textContent = activoActual
+            ? "Cancion desactivada."
+            : "Cancion activada.";
+          await abrirCatalogoAdmin();
+        } catch (e) {
+          ca("catalogoAdminLog").textContent =
+            (e.code || "ERROR") + ": " + e.message;
+        }
+      };
+    </script>
+  </body>
 </html>
