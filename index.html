@@ -427,10 +427,16 @@
       <h1 id="tituloCelebracion"></h1>
       <div id="letraCelebracion"></div>
       <div class="navegacion">
-        <button onclick="anterior()">◀ Anterior</button
-        ><button onclick="cerrarCelebracion()">❌ Cerrar</button
-        ><button onclick="siguiente()">▶ Siguiente</button>
-      </div>
+  	 <button onclick="anterior()">◀ Anterior</button>
+
+ 	 <div class="controlesTexto">
+   	 <button onclick="disminuirTexto()">A-</button>
+    	 <button onclick="aumentarTexto()">A+</button>
+ 	 </div>
+
+  	<button onclick="cerrarCelebracion()">❌ Cerrar</button>
+  	<button onclick="siguiente()">▶ Siguiente</button>
+	</div>
     </div>
 
     <div id="propuestaOverlay" class="propuesta-overlay" aria-hidden="true">
