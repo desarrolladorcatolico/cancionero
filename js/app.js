@@ -29,6 +29,11 @@ let listaActual = [],
 function catalogo() {
   return catalogoCanciones;
 }
+
+let tamanoCelebracion =
+  parseInt(localStorage.getItem("tamanoCelebracion")) || 30;
+
+
 function idIgual(a, b) {
   return String(a) === String(b);
 }
@@ -212,6 +217,8 @@ function iniciarCelebracion() {
   document.getElementById("modoCelebracion").classList.remove("oculto");
   pantallaCompleta();
 }
+
+
 function mostrarCelebracion() {
   const c = ordenCelebracion[indiceCelebracion];
   if (!c) {
@@ -226,6 +233,7 @@ function mostrarCelebracion() {
   const el = document.getElementById("letraCelebracion");
   el.innerText = c.letra;
   el.scrollTo({ top: 0, behavior: "smooth" });
+  aplicarTamanoCelebracion();
 }
 function siguiente() {
   if (indiceCelebracion < ordenCelebracion.length - 1) {
@@ -310,11 +318,43 @@ window.addEventListener("catalogo-cargado", (e) => {
     `Catálogo cargado desde ${e.detail?.origen}: ${catalogoCanciones.length} entradas`
   );
 });
+
+function aplicarTamanoCelebracion() {
+  const letra = document.getElementById("letraCelebracion");
+
+  if (!letra) return;
+
+  letra.style.fontSize = tamanoCelebracion + "px";
+
+  localStorage.setItem(
+    "tamanoCelebracion",
+    tamanoCelebracion
+  );
+}
+
+function aumentarTexto() {
+  if (tamanoCelebracion < 72) {
+    tamanoCelebracion += 2;
+    aplicarTamanoCelebracion();
+  }
+}
+
+function disminuirTexto() {
+  if (tamanoCelebracion > 16) {
+    tamanoCelebracion -= 2;
+    aplicarTamanoCelebracion();
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   crearPanelModo();
   cargarPersonal();
+  aplicarTamanoCelebracion();
 });
 if (document.readyState !== "loading") {
   crearPanelModo();
   cargarPersonal();
 }
+
+
+
