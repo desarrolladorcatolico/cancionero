@@ -271,3 +271,15 @@ button {
     flex-basis: 100%;
   }
 }
+
+
+.controlesTexto{
+  display:flex;
+  gap:4px;
+  flex-shrink:0;
+}
+
+.controlesTexto button{
+  font-weight:bold;
+  min-width:55px;
+}
